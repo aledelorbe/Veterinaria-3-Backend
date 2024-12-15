@@ -36,8 +36,8 @@ public class Client {
 
     // To obligate this attribute to contain values ​​equal to or greater than 1000000000
     // This ensures that this attribute will contain more than 10 digits.
-    @Min(1000000000)
-    @Max(9999999999L)
+    @Min(value = 1000000000, message = "{Min.client.phonenumber}")
+    @Max(value = 9999999999L, message = "{Max.client.phonenumber}")
     @NotNull // To obligate to this attribute not to empty
     private Long phonenumber;
 
