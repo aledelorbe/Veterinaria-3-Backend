@@ -5,21 +5,40 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+// To specific the name of the table in mysql
+// In mysql the name of this table is 'client' but in this project 
+// the name of this class is 'Client'
 @Entity
 @Table(name = "client") 
 public class Client {
+
+    // Mapping of class attributes with table fields in mysql
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank // To obligate to this attribute not to empty or blank values.
     private String name;
 
+    @NotBlank // To obligate to this attribute not to empty or blank values.
     private String lastname;
     
+    @NotBlank // To obligate to this attribute not to empty or blank values.
+    @Email
     private String email;
 
+    // To obligate this attribute to contain values ​​equal to or greater than 1000000000
+    // This ensures that this attribute will contain more than 10 digits.
+    @Min(1000000000)
+    @Max(9999999999L)
+    @NotNull // To obligate to this attribute not to empty
     private Long phonenumber;
 
     public Client() {
