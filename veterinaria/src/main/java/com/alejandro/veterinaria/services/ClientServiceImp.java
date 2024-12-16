@@ -10,18 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.repositories.ClientRepository;
 
-
 @Service
-public class ClientServiceImp implements ClientService{
+public class ClientServiceImp implements ClientService {
 
-     // To inject the repository dependency.
+    // To inject the repository dependency.
     @Autowired
     private ClientRepository repository;
-    
+
     // To list all of clients (records) in the table 'clients'
     @Override
     @Transactional(readOnly = true)
-    public List<Client> findAll(){
+    public List<Client> findAll() {
         return (List<Client>) repository.findAll(); // cast because the method findAll returns a iterable.
     }
 
@@ -35,7 +34,7 @@ public class ClientServiceImp implements ClientService{
     // To save a new client in the db
     @Override
     @Transactional
-    public Client save(Client client){
+    public Client save(Client client) {
         return repository.save(client);
     }
 
@@ -43,11 +42,11 @@ public class ClientServiceImp implements ClientService{
     @Override
     @Transactional
     public Optional<Client> update(Long id, Client client) {
-        // Find a specific client 
+        // Find a specific client
         Optional<Client> optionalClient = repository.findById(id);
-        
+
         // If the client is present then...
-        if( optionalClient.isPresent() ) {
+        if (optionalClient.isPresent()) {
             // update that record and return an optional value
             Client clientDb = optionalClient.get();
 
@@ -66,9 +65,9 @@ public class ClientServiceImp implements ClientService{
     @Override
     @Transactional
     public Optional<Client> deleteById(Long id) {
-        // Search a specific client 
+        // Search a specific client
         Optional<Client> optionalClient = repository.findById(id);
-        
+
         // If the client is present then delete that client
         optionalClient.ifPresent(clientDb -> {
             repository.deleteById(id);

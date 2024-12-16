@@ -42,10 +42,10 @@ public class ClientController {
     public ResponseEntity<?> client(@PathVariable Long id) {
         // Search a specific client and if it's present then return it.
         Optional<Client> optionalClient = service.findById(id);
-        if( optionalClient.isPresent() ) {
+        if (optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
-        // Else returns code response 404 
+        // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 
@@ -54,30 +54,32 @@ public class ClientController {
     @PostMapping()
     public ResponseEntity<?> saveClient(@Valid @RequestBody Client client, BindingResult result) {
         // To handle the obligations of object attributes
-        if( result.hasFieldErrors() ){
+        if (result.hasFieldErrors()) {
             return validation(result);
-        } 
+        }
 
         // When a new client is created to respond return the same client
         Client newClient = service.save(client);
         return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
     }
 
-    // To create an endpoint that allows update all of atributte values a specific client based its id.
+    // To create an endpoint that allows update all of atributte values a specific
+    // client based its id.
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateClient(@Valid @RequestBody Client client, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> updateClient(@Valid @RequestBody Client client, BindingResult result,
+            @PathVariable Long id) {
         // To handle of obligations of object attributes
-        if( result.hasFieldErrors() ){
+        if (result.hasFieldErrors()) {
             return validation(result);
-        } 
-        
+        }
+
         // Find specific client and if it's present then return specific client
         Optional<Client> optionalClient = service.update(id, client);
 
-        if( optionalClient.isPresent() ) {
+        if (optionalClient.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(optionalClient.orElseThrow());
         }
-        // Else return code response 404 
+        // Else return code response 404
         return ResponseEntity.notFound().build();
     }
 
@@ -86,14 +88,15 @@ public class ClientController {
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         // Find specific client and if it's present then return specific client
         Optional<Client> optionalClient = service.deleteById(id);
-        if( optionalClient.isPresent() ) {
+        if (optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
-        // Else return code response 404 
+        // Else return code response 404
         return ResponseEntity.notFound().build();
     }
 
-    // To send a JSON object with messages about the obligations of each object attribute
+    // To send a JSON object with messages about the obligations of each object
+    // attribute
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 
