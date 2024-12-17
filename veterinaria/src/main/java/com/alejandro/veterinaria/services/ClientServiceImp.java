@@ -89,8 +89,18 @@ public class ClientServiceImp implements ClientService {
     @Override
     @Transactional
     public Client savePetByClientId(Client clientDb, Pet newPet) {
-
+        
         clientDb.getPets().add(newPet);
+        
+        return repository.save(clientDb);
+    }
+    
+    // To delete a certain pet of a certain client in the db
+    @Override
+    @Transactional
+    public Client deletePetByClientId(Client clientDb, Pet petDb) {
+
+        clientDb.getPets().remove(petDb);
 
         return repository.save(clientDb);
     }

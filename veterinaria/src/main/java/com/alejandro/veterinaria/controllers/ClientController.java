@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.entities.Pet;
 import com.alejandro.veterinaria.services.ClientService;
+import com.alejandro.veterinaria.services.PetService;
 
 import jakarta.validation.Valid;
 
@@ -32,9 +33,9 @@ public class ClientController {
     @Autowired
     private ClientService service;
 
-    // // To Inject the service dependency
-    // @Autowired
-    // private PetService petService;
+    // To Inject the service dependency
+    @Autowired
+    private PetService petService;
 
     // -----------------------------
     // Methods for client entity
@@ -110,7 +111,7 @@ public class ClientController {
 
     // To create an endpoint that allows save a new pet of an certain
     // client
-    @PostMapping("/pets/{clientId}")
+    @PostMapping("/{clientId}/pets")
     public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet pet, BindingResult result,
             @PathVariable Long clientId) {
 
@@ -120,6 +121,23 @@ public class ClientController {
         if (optionalClient.isPresent()) {
             Client newClient = service.savePetByClientId(optionalClient.get(), pet);
             return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows save a new pet of an certain
+    // client
+    @DeleteMapping("/{clientId}/pets/{petId}")
+    public ResponseEntity<?> deletePetByClientId(@PathVariable Long clientId, @PathVariable Long petId) {
+
+        // Search a specific client and specific pet
+        Optional<Client> optionalClient = service.findById(clientId);
+        Optional<Pet> optionalPet = petService.findById(petId);
+
+        if ( optionalClient.isPresent() && optionalPet.isPresent() ) {
+            Client updateClient = service.deletePetByClientId(optionalClient.get(), optionalPet.get());
+            return ResponseEntity.ok(updateClient);
         }
         // Else returns code response 404
         return ResponseEntity.notFound().build();

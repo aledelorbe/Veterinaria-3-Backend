@@ -52,9 +52,8 @@ public class Client {
     private Long phonenumber;
 
     // To set a relationship one to many
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_client")
-    // private Set<Pet> pets;
     private List<Pet> pets;
 
     public Client() {
