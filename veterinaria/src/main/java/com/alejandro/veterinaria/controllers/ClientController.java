@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alejandro.veterinaria.entities.Client;
+import com.alejandro.veterinaria.entities.Pet;
 import com.alejandro.veterinaria.services.ClientService;
 
 import jakarta.validation.Valid;
@@ -30,6 +31,14 @@ public class ClientController {
     // To Inject the service dependency
     @Autowired
     private ClientService service;
+
+    // // To Inject the service dependency
+    // @Autowired
+    // private PetService petService;
+
+    // -----------------------------
+    // Methods for client entity
+    // -----------------------------
 
     // To create an endpoint that allows invocating the method findAll.
     @GetMapping()
@@ -92,6 +101,27 @@ public class ClientController {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
         // Else return code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // -----------------------------
+    // Methods for pet entity
+    // -----------------------------
+
+    // To create an endpoint that allows save a new pet of an certain
+    // client
+    @PostMapping("/pets/{clientId}")
+    public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet pet, BindingResult result,
+            @PathVariable Long clientId) {
+
+        // Search a specific client 
+        Optional<Client> optionalClient = service.findById(clientId);
+
+        if (optionalClient.isPresent()) {
+            Client newClient = service.savePetByClientId(optionalClient.get(), pet);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+        }
+        // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 

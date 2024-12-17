@@ -1,5 +1,6 @@
 package com.alejandro.veterinaria.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pet")
     private Long id;
 
     @NotBlank // To obligate to this attribute not to empty or blank values.

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.veterinaria.entities.Client;
+import com.alejandro.veterinaria.entities.Pet;
 import com.alejandro.veterinaria.repositories.ClientRepository;
 
 @Service
@@ -16,6 +17,10 @@ public class ClientServiceImp implements ClientService {
     // To inject the repository dependency.
     @Autowired
     private ClientRepository repository;
+
+    // -----------------------------
+    // Methods for client entity
+    // -----------------------------
 
     // To list all of clients (records) in the table 'clients'
     @Override
@@ -26,7 +31,7 @@ public class ClientServiceImp implements ClientService {
 
     // To get a specific client based on its id
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Client> findById(Long id) {
         return repository.findById(id);
     }
@@ -75,4 +80,19 @@ public class ClientServiceImp implements ClientService {
 
         return optionalClient;
     }
+
+    // -----------------------------
+    // Methods for pet entity
+    // -----------------------------
+
+    // To save a new pet of a certain client in the db
+    @Override
+    @Transactional
+    public Client savePetByClientId(Client clientDb, Pet newPet) {
+
+        clientDb.getPets().add(newPet);
+
+        return repository.save(clientDb);
+    }
+
 }

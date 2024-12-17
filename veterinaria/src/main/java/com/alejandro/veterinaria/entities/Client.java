@@ -1,9 +1,12 @@
 package com.alejandro.veterinaria.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+// import java.util.HashSet;
+// import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +31,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_client")
     private Long id;
 
     @NotBlank // To obligate to this attribute not to empty or blank values.
@@ -50,10 +54,11 @@ public class Client {
     // To set a relationship one to many
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_client")
-    private Set<Pet> pets;
+    // private Set<Pet> pets;
+    private List<Pet> pets;
 
     public Client() {
-        this.pets = new HashSet<>();
+        this.pets = new ArrayList<>();
     }
 
     public Long getId() {
@@ -96,11 +101,11 @@ public class Client {
         this.phonenumber = phonenumber;
     }
 
-    public Set<Pet> getPets() {
+    public List<Pet> getPets() {
         return pets;
     }
 
-    public void setPets(Set<Pet> pets) {
+    public void setPets(List<Pet> pets) {
         this.pets = pets;
     }
 }
