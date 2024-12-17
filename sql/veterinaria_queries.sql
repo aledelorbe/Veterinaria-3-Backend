@@ -1,4 +1,4 @@
-create database veterinaria;
+-- create database veterinaria;
 
 use veterinaria;
 
@@ -13,6 +13,8 @@ TRUNCATE table client;
 
 select * 
 from pet;
+
+TRUNCATE table pet;
 
 
 

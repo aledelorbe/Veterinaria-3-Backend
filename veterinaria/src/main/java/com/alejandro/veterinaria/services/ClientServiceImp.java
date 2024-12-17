@@ -105,4 +105,19 @@ public class ClientServiceImp implements ClientService {
         return repository.save(clientDb);
     }
 
+
+
+
+    @Override
+    @Transactional
+    public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet) {
+
+        petDb.setName(editPet.getName());
+        petDb.setSpecie(editPet.getSpecie());
+        petDb.setBreed(editPet.getBreed());
+        petDb.setAge(editPet.getAge());
+
+        return repository.save(clientDb);
+    }
+
 }

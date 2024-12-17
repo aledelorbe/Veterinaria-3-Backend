@@ -33,7 +33,7 @@ public class Pet {
     private String breed;
     
     @NotNull // To obligate to this attribute not to empty
-    private int age;
+    private Long age;
 
     public Pet() {
     }
@@ -70,11 +70,11 @@ public class Pet {
         this.breed = breed;
     }
 
-    public int getAge() {
+    public Long getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Long age) {
         this.age = age;
     }
 

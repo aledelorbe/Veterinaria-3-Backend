@@ -31,4 +31,6 @@ public interface ClientService {
     public Client savePetByClientId(Client clientDb, Pet newPet);
 
     public Client deletePetByClientId(Client clientDb, Pet petDb);
+    
+    public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet);
 }
