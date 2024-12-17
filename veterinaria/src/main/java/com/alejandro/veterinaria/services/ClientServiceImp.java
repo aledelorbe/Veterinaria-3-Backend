@@ -95,23 +95,12 @@ public class ClientServiceImp implements ClientService {
         return repository.save(clientDb);
     }
     
-    // To delete a certain pet of a certain client in the db
-    @Override
-    @Transactional
-    public Client deletePetByClientId(Client clientDb, Pet petDb) {
-
-        clientDb.getPets().remove(petDb);
-
-        return repository.save(clientDb);
-    }
-
-
-
-
+    // To update the information about the pet
     @Override
     @Transactional
     public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet) {
 
+        // update all of object attributes
         petDb.setName(editPet.getName());
         petDb.setSpecie(editPet.getSpecie());
         petDb.setBreed(editPet.getBreed());
@@ -120,4 +109,13 @@ public class ClientServiceImp implements ClientService {
         return repository.save(clientDb);
     }
 
+    // To delete a certain pet in the db
+    @Override
+    @Transactional
+    public Client deletePetByClientId(Client clientDb, Pet petDb) {
+
+        clientDb.getPets().remove(petDb);
+
+        return repository.save(clientDb);
+    }
 }

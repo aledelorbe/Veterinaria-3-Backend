@@ -109,54 +109,51 @@ public class ClientController {
     // Methods for pet entity
     // -----------------------------
 
-    // To create an endpoint that allows save a new pet of an certain
-    // client
+    // To create an endpoint that allows saving a new pet of an certain client
     @PostMapping("/{clientId}/pets")
-    public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet pet, BindingResult result,
+    public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet newPet, BindingResult result,
             @PathVariable Long clientId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return validation(result);
         }
 
-        // Search a specific client
+        // Search for a specific client if it exists then save the pet
         Optional<Client> optionalClient = service.findById(clientId);
 
         if (optionalClient.isPresent()) {
-            Client newClient = service.savePetByClientId(optionalClient.get(), pet);
+            Client newClient = service.savePetByClientId(optionalClient.get(), newPet);
             return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
         }
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows edit information of a certain pet of an certain
-    // client
+    // To create an endpoint that allows updating information of a certain pet of a certain client
     @PutMapping("/{clientId}/pets/{petId}")
-    public ResponseEntity<?> editPetByClientId(@Valid @RequestBody Pet pet, BindingResult result, @PathVariable Long clientId, @PathVariable Long petId) {
+    public ResponseEntity<?> editPetByClientId(@Valid @RequestBody Pet editPet, BindingResult result, @PathVariable Long clientId, @PathVariable Long petId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
             return validation(result);
         }
 
-        // Search a specific client and specific pet
+        // Search for a specific client and specific pet and if they are present then edit the information about pet
         Optional<Client> optionalClient = service.findById(clientId);
         Optional<Pet> optionalPet = petService.findById(petId);
 
         if (optionalClient.isPresent() && optionalPet.isPresent()) {
-            Client updateClient = service.editPetByClientId(optionalClient.get(), optionalPet.get(), pet);
+            Client updateClient = service.editPetByClientId(optionalClient.get(), optionalPet.get(), editPet);
             return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
         }
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
     
-    // To create an endpoint that allows save a new pet of an certain
-    // client
+    // To create an endpoint that allows deleting a certain pet of a certain client
     @DeleteMapping("/{clientId}/pets/{petId}")
     public ResponseEntity<?> deletePetByClientId(@PathVariable Long clientId, @PathVariable Long petId) {
 
-        // Search a specific client and specific pet
+        // Search for a specific client and specific pet and if they are present then delete a pet
         Optional<Client> optionalClient = service.findById(clientId);
         Optional<Pet> optionalPet = petService.findById(petId);
 
