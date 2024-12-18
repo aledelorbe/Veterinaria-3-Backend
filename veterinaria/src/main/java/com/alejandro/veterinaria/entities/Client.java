@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,7 +25,7 @@ import jakarta.validation.constraints.NotNull;
 // In mysql the name of this table is 'client' but in this project 
 // the name of this class is 'Client'
 @Entity
-@Table(name = "client") 
+@Table(name = "client", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "lastname"})) 
 public class Client {
 
     // Mapping of class attributes with table fields in mysql

@@ -11,5 +11,4 @@ public interface PetService {
 
     public Optional<Pet> findById(Long id);
 
-    public Pet updatePet(Pet petDb, Pet editPet);
 }

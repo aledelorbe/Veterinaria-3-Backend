@@ -3,6 +3,8 @@ package com.alejandro.veterinaria.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ public class ClientServiceImp implements ClientService {
     // To inject the repository dependency.
     @Autowired
     private ClientRepository repository;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
     // -----------------------------
     // Methods for client entity
@@ -37,9 +41,17 @@ public class ClientServiceImp implements ClientService {
     }
 
     // To save a new client in the db
+    // This method is a 'join point'
     @Override
     @Transactional
     public Client save(Client client) {
+
+        boolean isClientExists = repository.existsByNameAndLastname(client.getName(), client.getLastname());
+
+        if( isClientExists ){
+            logger.info("asi es asdfasdfsdafsadf");
+        }
+
         return repository.save(client);
     }
 
@@ -79,6 +91,12 @@ public class ClientServiceImp implements ClientService {
         });
 
         return optionalClient;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByNameAndLastname(String name, String lastname) {
+        return repository.existsByNameAndLastname(name, lastname);
     }
 
     // -----------------------------
