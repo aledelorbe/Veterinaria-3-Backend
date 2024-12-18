@@ -43,6 +43,4 @@ public class ErrorMessage {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
-
-    
 }

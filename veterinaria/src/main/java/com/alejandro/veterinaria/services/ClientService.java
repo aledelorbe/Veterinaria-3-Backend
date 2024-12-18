@@ -24,8 +24,6 @@ public interface ClientService {
 
     public Optional<Client> deleteById(Long id);
 
-    public boolean existsByNameAndLastname(String name, String lastname);
-
     // -----------------------------
     // Methods for pet entity
     // -----------------------------
