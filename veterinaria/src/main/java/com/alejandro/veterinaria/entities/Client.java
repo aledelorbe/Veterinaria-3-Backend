@@ -25,7 +25,7 @@ import jakarta.validation.constraints.NotNull;
 // In mysql the name of this table is 'client' but in this project 
 // the name of this class is 'Client'
 @Entity
-@Table(name = "client", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "lastname"})) 
+@Table(name = "client", uniqueConstraints = @UniqueConstraint(name = "UK_client", columnNames = {"name", "lastname"})) 
 public class Client {
 
     // Mapping of class attributes with table fields in mysql

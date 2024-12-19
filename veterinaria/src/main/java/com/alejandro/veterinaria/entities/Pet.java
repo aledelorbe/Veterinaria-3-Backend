@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 // In mysql the name of this table is 'pet' but in this project 
 // the name of this class is 'Pet'
 @Entity
-@Table(name = "pet") 
+@Table(name = "pet", uniqueConstraints = @UniqueConstraint(name = "UK_client_pet", columnNames = {"id_client", "name"})) 
 public class Pet {
 
     // Mapping of class attributes with table fields in mysql
