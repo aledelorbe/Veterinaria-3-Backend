@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
@@ -25,7 +26,7 @@ import jakarta.validation.constraints.NotNull;
 // In mysql the name of this table is 'client' but in this project 
 // the name of this class is 'Client'
 @Entity
-@Table(name = "client", uniqueConstraints = @UniqueConstraint(name = "UK_client", columnNames = {"name", "lastname"})) 
+@Table(name = "client", uniqueConstraints = @UniqueConstraint(name = "UK_client", columnNames = { "name", "lastname" }))
 public class Client {
 
     // Mapping of class attributes with table fields in mysql
@@ -40,12 +41,13 @@ public class Client {
 
     @NotBlank // To obligate to this attribute not to empty or blank values.
     private String lastname;
-    
+
     @NotBlank // To obligate to this attribute not to empty or blank values.
     @Email
     private String email;
 
-    // To obligate this attribute to contain values ​​equal to or greater than 1000000000
+    // To obligate this attribute to contain values ​​equal to or greater than
+    // 1000000000
     // This ensures that this attribute will contain more than 10 digits.
     @Min(value = 1000000000, message = "{Min.client.phonenumber}")
     @Max(value = 9999999999L, message = "{Max.client.phonenumber}")
@@ -56,6 +58,11 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_client")
     private List<Pet> pets;
+    
+    // To set a relationship one to one
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_address")
+    private Address address;
 
     public Client() {
         this.pets = new ArrayList<>();
@@ -107,5 +114,13 @@ public class Client {
 
     public void setPets(List<Pet> pets) {
         this.pets = pets;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

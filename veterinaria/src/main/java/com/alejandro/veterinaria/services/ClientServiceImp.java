@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.entities.Pet;
+// import com.alejandro.veterinaria.repositories.AddressRepository;
 import com.alejandro.veterinaria.repositories.ClientRepository;
 
 @Service
@@ -17,6 +19,10 @@ public class ClientServiceImp implements ClientService {
     // To inject the repository dependency.
     @Autowired
     private ClientRepository repository;
+
+    // // To inject the repository dependency.
+    // @Autowired
+    // private AddressRepository addressRepository;
 
     // -----------------------------
     // Methods for client entity
@@ -82,7 +88,6 @@ public class ClientServiceImp implements ClientService {
         return optionalClient;
     }
 
-
     // -----------------------------
     // Methods for pet entity
     // -----------------------------
@@ -91,12 +96,12 @@ public class ClientServiceImp implements ClientService {
     @Override
     @Transactional
     public Client savePetByClientId(Client clientDb, Pet newPet) {
-        
+
         clientDb.getPets().add(newPet);
-        
+
         return repository.save(clientDb);
     }
-    
+
     // To update the information about the pet
     @Override
     @Transactional
@@ -118,6 +123,46 @@ public class ClientServiceImp implements ClientService {
     public Client deletePetByClientId(Client clientDb, Pet petDb) {
 
         clientDb.getPets().remove(petDb);
+
+        return repository.save(clientDb);
+    }
+
+    // -----------------------------
+    // Methods for address entity
+    // -----------------------------
+
+    // To save a new address of a certain client in the db
+    @Override
+    @Transactional
+    public Client saveAddressByClientId(Client clientDb, Address newAddress) {
+
+        clientDb.setAddress(newAddress);
+        
+        return repository.save(clientDb);
+    }
+    
+    // To update the information about the address
+    @Override
+    @Transactional
+    public Client editAddressByClientId(Client clientDb, Address editAddress) {
+
+        Address addressDb = clientDb.getAddress();
+
+        // update all of object attributes
+        addressDb.setStreet(editAddress.getStreet());
+        addressDb.setState(editAddress.getState());
+        addressDb.setCity(editAddress.getCity());
+        addressDb.setCp(editAddress.getCp());
+
+        return repository.save(clientDb);
+    }
+
+    // To delete a certain address in the db
+    @Override
+    @Transactional
+    public Client deleteAddressByClientId(Client clientDb) {
+        
+        clientDb.setAddress(null);
 
         return repository.save(clientDb);
     }

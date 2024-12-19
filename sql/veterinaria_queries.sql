@@ -7,15 +7,18 @@ use veterinaria;
 select * 
 from client;
 
-TRUNCATE table client;
+-- TRUNCATE table client;
 
 -- Pet Entity
 
 select * 
 from pet;
 
-TRUNCATE table pet;
+-- TRUNCATE table pet;
 
+-- Address Entity
 
+select * 
+from address;
 
--- Adress Entity
+-- TRUNCATE table address;

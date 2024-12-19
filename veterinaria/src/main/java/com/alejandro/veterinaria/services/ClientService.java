@@ -3,6 +3,7 @@ package com.alejandro.veterinaria.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.entities.Pet;
 
@@ -30,7 +31,17 @@ public interface ClientService {
 
     public Client savePetByClientId(Client clientDb, Pet newPet);
 
-    public Client deletePetByClientId(Client clientDb, Pet petDb);
-    
     public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet);
+    
+    public Client deletePetByClientId(Client clientDb, Pet petDb);
+
+    // -----------------------------
+    // Methods for address entity
+    // -----------------------------
+
+    public Client saveAddressByClientId(Client clientDb, Address newAddress);
+
+    public Client editAddressByClientId(Client clientDb, Address editAddress);
+    
+    public Client deleteAddressByClientId(Client clientDb);
 }

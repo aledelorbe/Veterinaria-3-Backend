@@ -15,8 +15,9 @@ public class PetAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(PetAspect.class);
 
-    // To create advice that intercepts the save method of the pet service file
-    @Before("execution(public com.alejandro.veterinaria.entities.Client com.alejandro.veterinaria.services.ClientServiceImp.savePetByClientId(com.alejandro.veterinaria.entities.Client, com.alejandro.veterinaria.entities.Pet))")    public void trimBefore(JoinPoint joinPoint) {
+    // To create advice that intercepts the savePetByClientId method of the pet service file
+    @Before("execution(public com.alejandro.veterinaria.entities.Client com.alejandro.veterinaria.services.ClientServiceImp.savePetByClientId(com.alejandro.veterinaria.entities.Client, com.alejandro.veterinaria.entities.Pet))")    
+    public void trimBefore(JoinPoint joinPoint) {
 
         logger.info("Aspecto ejecutado antes del método savePetByClientId() ------------------------");
 
