@@ -36,6 +36,9 @@ public class Pet {
     @NotNull // To obligate to this attribute not to empty
     private Long age;
 
+    @NotBlank // To obligate to this attribute not to empty or blank values.
+    private String reasonForVisit;
+
     public Pet() {
     }
 
@@ -78,7 +81,15 @@ public class Pet {
     public void setAge(Long age) {
         this.age = age;
     }
+    
+    public String getReasonForVisit() {
+        return reasonForVisit;
+    }
 
+    public void setReasonForVisit(String reasonForVisit) {
+        this.reasonForVisit = reasonForVisit;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -103,4 +114,5 @@ public class Pet {
             return false;
         return true;
     }
+
 }

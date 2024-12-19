@@ -107,6 +107,7 @@ public class ClientServiceImp implements ClientService {
         petDb.setSpecie(editPet.getSpecie());
         petDb.setBreed(editPet.getBreed());
         petDb.setAge(editPet.getAge());
+        petDb.setReasonForVisit(editPet.getReasonForVisit());
 
         return repository.save(clientDb);
     }
