@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.alejandro.veterinaria.entities.ErrorMessage;
 
+// This class is used to handle when an exception is fired 
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -18,10 +19,20 @@ public class ExceptionController {
 
         // To know which entity fires the 'DataIntegrityViolationException'
         String errorMessage;
-        if ( e.getMessage().contains("client.UK_client")) {
-            errorMessage = "Error! El cliente que se desea registrar ya se encuentra en la base de datos.";
+        if (e.getMessage().contains("client.UK_client")) {
+            // To know if this exception is fired by an update or create action.
+            if (e.getMessage().contains("insert")) {
+                errorMessage = "Error! El cliente que se desea registrar ya se encuentra en la base de datos.";
+            } else {
+                errorMessage = "Error! Este nombre de cliente al cual se desea actualizar ya lo posee otro cliente.";
+            }
         } else {
-            errorMessage = "Error! Esta mascota ya se registro previamente para este cliente.";
+            // To know if this exception is fired by an update or create action.
+            if (e.getMessage().contains("insert")) {
+                errorMessage = "Error! Esta mascota ya se registro previamente para este cliente.";
+            } else {
+                errorMessage = "Error! Este nombre de mascota al cual se desea actualizar ya lo posee otro mascota de este mismo cliente.";
+            }
         }
 
         ErrorMessage error = new ErrorMessage();

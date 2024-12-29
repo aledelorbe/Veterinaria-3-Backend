@@ -1,9 +1,9 @@
 package com.alejandro.veterinaria.entities;
 
 import java.util.ArrayList;
-// import java.util.HashSet;
-// import java.util.Set;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -108,6 +108,7 @@ public class Client {
         this.phonenumber = phonenumber;
     }
 
+    @JsonIgnore
     public List<Pet> getPets() {
         return pets;
     }
@@ -116,6 +117,7 @@ public class Client {
         this.pets = pets;
     }
 
+    @JsonIgnore
     public Address getAddress() {
         return address;
     }

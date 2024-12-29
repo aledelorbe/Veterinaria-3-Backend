@@ -42,16 +42,16 @@ public class ClientController {
     // Methods for client entity
     // -----------------------------
 
-    // To create an endpoint that allows invocating the method findAll.
+    // To create an endpoint that allows invoking the method findAll.
     @GetMapping()
     public List<Client> clients() {
         return service.findAll();
     }
 
-    // To create an endpoint that allows invocating the method fingById.
+    // To create an endpoint that allows invoking the method fingById.
     @GetMapping("/{id}")
     public ResponseEntity<?> client(@PathVariable Long id) {
-        // Search a specific client and if it's present then return it.
+        // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = service.findById(id);
         if (optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.orElseThrow());
@@ -60,7 +60,7 @@ public class ClientController {
         return ResponseEntity.notFound().build();
     }
 
-    // To create an endpoint that allows invocating the method save.
+    // To create an endpoint that allows invoking the method save.
     // The annotation called 'RequestBody' allows receiving data of a client
     @PostMapping()
     public ResponseEntity<?> saveClient(@Valid @RequestBody Client client, BindingResult result) {
@@ -228,7 +228,22 @@ public class ClientController {
         return ResponseEntity.notFound().build();
     }
 
+    // -----------------------------
+    // Methods for custom queries of client entity
+    // -----------------------------
 
+    // To create an endpoint that allows invoking the method fingById.
+    @GetMapping("/{id_client}/address")
+    public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
+        // Search for a specific client and if it's present then return it.
+        Optional<Client> optionalClient = service.findById(id_client);
+
+        if (optionalClient.isPresent()) {
+            return ResponseEntity.ok(service.getAddressesByClientId(id_client));
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
 
     // -----------------------------
     // Method to validate

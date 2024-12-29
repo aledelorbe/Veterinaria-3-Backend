@@ -32,7 +32,7 @@ public interface ClientService {
     public Client savePetByClientId(Client clientDb, Pet newPet);
 
     public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet);
-    
+
     public Client deletePetByClientId(Client clientDb, Pet petDb);
 
     // -----------------------------
@@ -42,6 +42,12 @@ public interface ClientService {
     public Client saveAddressByClientId(Client clientDb, Address newAddress);
 
     public Client editAddressByClientId(Client clientDb, Address editAddress);
-    
+
     public Client deleteAddressByClientId(Client clientDb);
+
+    // -----------------------------
+    // Methods for custom queries of client entity
+    // -----------------------------
+
+    public Address getAddressesByClientId(Long id_client);
 }

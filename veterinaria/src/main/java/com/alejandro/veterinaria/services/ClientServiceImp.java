@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.entities.Pet;
-// import com.alejandro.veterinaria.repositories.AddressRepository;
 import com.alejandro.veterinaria.repositories.ClientRepository;
 
 @Service
@@ -19,10 +18,6 @@ public class ClientServiceImp implements ClientService {
     // To inject the repository dependency.
     @Autowired
     private ClientRepository repository;
-
-    // // To inject the repository dependency.
-    // @Autowired
-    // private AddressRepository addressRepository;
 
     // -----------------------------
     // Methods for client entity
@@ -137,10 +132,10 @@ public class ClientServiceImp implements ClientService {
     public Client saveAddressByClientId(Client clientDb, Address newAddress) {
 
         clientDb.setAddress(newAddress);
-        
+
         return repository.save(clientDb);
     }
-    
+
     // To update the information about the address
     @Override
     @Transactional
@@ -161,9 +156,20 @@ public class ClientServiceImp implements ClientService {
     @Override
     @Transactional
     public Client deleteAddressByClientId(Client clientDb) {
-        
+
         clientDb.setAddress(null);
 
         return repository.save(clientDb);
+    }
+
+    // -----------------------------
+    // Methods for custom queries of client entity
+    // -----------------------------
+
+    // To get the address of certain client
+    @Override
+    @Transactional(readOnly = true)
+    public Address getAddressesByClientId(Long id_client) {
+        return repository.getAddressesByClientId(id_client);
     }
 }
