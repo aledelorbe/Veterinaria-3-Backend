@@ -232,14 +232,27 @@ public class ClientController {
     // Methods for custom queries of client entity
     // -----------------------------
 
-    // To create an endpoint that allows invoking the method fingById.
+    // To create an endpoint that allows invoking the method 'getAddressByClientId'.
     @GetMapping("/{id_client}/address")
     public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
         // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = service.findById(id_client);
 
         if (optionalClient.isPresent()) {
-            return ResponseEntity.ok(service.getAddressesByClientId(id_client));
+            return ResponseEntity.ok(service.getAddressByClientId(id_client));
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+    
+    // To create an endpoint that allows invoking the method 'getPetsByClientId'.
+    @GetMapping("/{id_client}/pets")
+    public ResponseEntity<?> getPetsByClientId(@PathVariable Long id_client) {
+        // Search for a specific client and if it's present then return it.
+        Optional<Client> optionalClient = service.findById(id_client);
+
+        if (optionalClient.isPresent()) {
+            return ResponseEntity.ok(service.getPetsByClientId(id_client));
         }
         // Else returns code response 404
         return ResponseEntity.notFound().build();

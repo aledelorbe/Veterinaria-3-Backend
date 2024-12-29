@@ -49,5 +49,8 @@ public interface ClientService {
     // Methods for custom queries of client entity
     // -----------------------------
 
-    public Address getAddressesByClientId(Long id_client);
+    public Address getAddressByClientId(Long id_client);
+
+    public List<Pet> getPetsByClientId(Long id_client);
+
 }

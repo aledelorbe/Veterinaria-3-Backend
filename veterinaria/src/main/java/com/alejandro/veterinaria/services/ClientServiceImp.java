@@ -169,7 +169,15 @@ public class ClientServiceImp implements ClientService {
     // To get the address of certain client
     @Override
     @Transactional(readOnly = true)
-    public Address getAddressesByClientId(Long id_client) {
-        return repository.getAddressesByClientId(id_client);
+    public Address getAddressByClientId(Long id_client) {
+        return repository.getAddressByClientId(id_client);
     }
+    
+    // To get all the pets of certain client
+    @Override
+    @Transactional(readOnly = true)
+    public List<Pet> getPetsByClientId(Long id_client) {
+        return repository.getPetsByClientId(id_client);
+    }
+
 }
