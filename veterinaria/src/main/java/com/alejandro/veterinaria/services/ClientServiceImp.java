@@ -72,7 +72,7 @@ public class ClientServiceImp implements ClientService {
     @Override
     @Transactional
     public Optional<Client> deleteById(Long id) {
-        // Search a specific client
+        // Search for a specific client
         Optional<Client> optionalClient = repository.findById(id);
 
         // If the client is present then delete that client
