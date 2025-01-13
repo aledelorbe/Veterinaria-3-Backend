@@ -68,6 +68,9 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 - Implementar un endpoint que permita recuperar la información de un cliente específico a partir de su nombre completo.
 - Implementar un endpoint que permita recuperar la información de un cliente específico y todas sus mascotas a partir del nombre de alguna de sus mascotas.
+- Agregar un metodo de intercepcion (antes de su ejecucion) a los metodos actualizar de las entidades clientes, mascotas y direcciones.
+- Implementar la manera correcta de hacer CRUD sobre los objetos de las entidades mascotas y direcciones.
+- Despligue en AWS.
 
 ## Demo
 
@@ -145,6 +148,9 @@ This project involves the development of a backend to manage information related
 
 - Implement an endpoint to retrieve a specific client's information using their full name.
 - Implement an endpoint to retrieve a specific client's information and all their pets using the name of one of their pets.
+- Add an interception method (before execution) to the update methods of the client, pet, and address entities.
+- Implement the correct way to perform CRUD operations on the objects of the pet and address entities.
+- Deploy on AWS.
 
 ## Demo
 
