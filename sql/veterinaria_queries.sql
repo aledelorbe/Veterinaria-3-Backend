@@ -30,3 +30,10 @@ where cl.id_client = 1;
 select *
 from pet
 where id_client = 1;
+
+-- To get all of the clients whose pets have a certain name
+select c.*
+from pet p
+inner join client c
+on p.id_client = c.id_client
+where p.name like '%lia%';

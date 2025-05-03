@@ -258,6 +258,45 @@ public class ClientController {
         return ResponseEntity.notFound().build();
     }
 
+    // To create an endpoint that allows invoking the method findByName.
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getClientByName(@PathVariable String name) {
+        // Search for a specific client and if it's present then return it.
+        List<Client> clients = service.findByNameContaining(name);
+
+        if ( !clients.isEmpty() ) {
+            return ResponseEntity.ok(clients);
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows invoking the method findByLastname.
+    @GetMapping("/lastname/{lastname}")
+    public ResponseEntity<?> getClientByLastname(@PathVariable String lastname) {
+        // Search for a specific client and if it's present then return it.
+        List<Client> clients = service.findByLastnameContaining(lastname);
+
+        if ( !clients.isEmpty() ) {
+            return ResponseEntity.ok(clients);
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
+    // To create an endpoint that allows invoking the method findByLastname.
+    @GetMapping("/pets/{petName}")
+    public ResponseEntity<?> getClientsByPetNameLike(@PathVariable String petName) {
+        // Search for a specific client and if it's present then return it.
+        List<Client> clients = service.findClientsByPetNameLike(petName);
+
+        if ( !clients.isEmpty() ) {
+            return ResponseEntity.ok(clients);
+        }
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
     // -----------------------------
     // Method to validate
     // -----------------------------

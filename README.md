@@ -19,7 +19,10 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 - **API REST** con rutas organizadas para interactuar con las actividades. Operaciones soportadas:
   - **Client**:
     - Obtener la lista de todos los clientes.
+    - Obtener la lista de todos los clientes cuya mascota tenga cierto nombre.
     - Obtener la información de un cliente específico por su ID.
+    - Obtener la información de un cliente específico por su nombre.
+    - Obtener la información de un cliente específico por su apellido.
     - Crear un nuevo cliente.
     - Actualizar la información de un cliente existente.
     - Eliminar un cliente por su ID.
@@ -66,7 +69,6 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 ## Futuras mejoras
 
-- Implementar un endpoint que permita recuperar la información de un cliente específico a partir de su nombre completo.
 - Implementar un endpoint que permita recuperar la información de un cliente específico y todas sus mascotas a partir del nombre de alguna de sus mascotas.
 - Agregar un metodo de intercepcion (antes de su ejecucion) a los metodos actualizar de las entidades clientes, mascotas y direcciones.
 - Implementar la manera correcta de hacer CRUD sobre los objetos de las entidades mascotas y direcciones.

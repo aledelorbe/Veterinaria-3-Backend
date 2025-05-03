@@ -180,4 +180,25 @@ public class ClientServiceImp implements ClientService {
         return repository.getPetsByClientId(id_client);
     }
 
+    // To get all of the clients with a certain name
+    @Override
+    @Transactional(readOnly = true)
+    public List<Client> findByNameContaining(String name) {
+        return repository.findByNameContaining(name);
+    }
+
+    // To get all of the clients with a certain lastname
+    @Override
+    @Transactional(readOnly = true)
+    public List<Client> findByLastnameContaining(String lastname) {
+        return repository.findByLastnameContaining(lastname);
+    }
+    
+    // To get all of the clients whose pets have a certain name
+    @Override
+    @Transactional(readOnly = true)
+    public List<Client> findClientsByPetNameLike(String petName) {
+        return repository.findClientsByPetNameLike(petName);
+    }
+
 }
