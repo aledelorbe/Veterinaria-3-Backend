@@ -44,9 +44,9 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 - **Manejo de excepciones**:
   - Si se rompe la restricción para la entidad `Client` al intentar registrar dos veces a un mismo cliente, o si se rompe la restricción para la entidad `Pet` al intentar registrar dos veces una misma mascota para un mismo cliente, se dispara la excepción `DataIntegrityViolationException`. Esta excepción se maneja mediante dos clases que, en conjunto, permiten capturarla y generar un mensaje personalizado indicando cuál de las restricciones se ha roto.
 - **Implementación de Programación Orientada a Aspectos (POA)**:
-  - La clase `ClientAspect` incluye un método que intercepta, antes de su ejecución, el método encargado de guardar nuevos clientes en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **apellido** y **email**.
-  - La clase `PetAspect` incluye un método que intercepta, antes de su ejecución, el método encargado de guardar nuevas mascotas en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **especie** y **raza**.
-  - La clase `AddressAspect` incluye un método que intercepta, antes de su ejecución, el método encargado de guardar nuevas direcciones en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **calle**, **colonia** y **ciudad**.
+  - La clase `ClientAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar clientes en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **apellido** y **email**.
+  - La clase `PetAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar mascotas en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **especie**, **raza** y **razón de visita**.
+  - La clase `AddressAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar direcciones en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **calle**, **colonia** y **ciudad**.
 - **Validación de datos de entrada**:
   - `Client`:
     - No se permite que los atributos **nombre** y **apellido** se reciban vacíos o con solo espacios en blanco.
@@ -69,8 +69,6 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 ## Futuras mejoras
 
-- Implementar un endpoint que permita recuperar la información de un cliente específico y todas sus mascotas a partir del nombre de alguna de sus mascotas.
-- Agregar un metodo de intercepcion (antes de su ejecucion) a los metodos actualizar de las entidades clientes, mascotas y direcciones.
 - Implementar la manera correcta de hacer CRUD sobre los objetos de las entidades mascotas y direcciones.
 - Despligue en AWS.
 
