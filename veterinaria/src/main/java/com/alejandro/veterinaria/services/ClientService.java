@@ -39,6 +39,8 @@ public interface ClientService {
     // Methods for address entity
     // -----------------------------
 
+    public Optional<Address> getAddressByClientId(Client clientDb);
+
     public Client saveAddressByClientId(Client clientDb, Address newAddress);
 
     public Client editAddressByClientId(Client clientDb, Address editAddress);
@@ -49,8 +51,6 @@ public interface ClientService {
     // Methods for custom queries of client entity
     // -----------------------------
 
-    public Address getAddressByClientId(Long id_client);
-    
     public List<Pet> getPetsByClientId(Long id_client);
     
     public List<Client> findByNameContaining(String name);

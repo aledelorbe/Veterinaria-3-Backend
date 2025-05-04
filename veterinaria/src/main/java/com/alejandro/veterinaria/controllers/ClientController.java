@@ -174,6 +174,29 @@ public class ClientController {
     // Methods for address entity
     // -----------------------------
 
+    // To create an endpoint that allows invoking the method 'getAddressByClientId'.
+    @GetMapping("/{id_client}/address")
+    public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
+        // Search for a specific client and if it's present then return it.
+        Optional<Client> optionalClient = service.findById(id_client);
+
+        if (optionalClient.isPresent()) {
+
+            Optional<Address> optionalAddress = service.getAddressByClientId(optionalClient.get());
+
+            // If the address is present the return it.
+            if (optionalAddress.isPresent()) {
+                return ResponseEntity.ok(optionalAddress.get());
+            }
+
+            // Else returns code response 404
+            return ResponseEntity.notFound().build();
+        }
+
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
     // To create an endpoint that allows saving a new address of an certain client
     @PostMapping("/{clientId}/address")
     public ResponseEntity<?> saveNewAddressByClientId(@Valid @RequestBody Address newAddress, BindingResult result, @PathVariable Long clientId) {
@@ -231,19 +254,6 @@ public class ClientController {
     // -----------------------------
     // Methods for custom queries of client entity
     // -----------------------------
-
-    // To create an endpoint that allows invoking the method 'getAddressByClientId'.
-    @GetMapping("/{id_client}/address")
-    public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
-        // Search for a specific client and if it's present then return it.
-        Optional<Client> optionalClient = service.findById(id_client);
-
-        if (optionalClient.isPresent()) {
-            return ResponseEntity.ok(service.getAddressByClientId(id_client));
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
     
     // To create an endpoint that allows invoking the method 'getPetsByClientId'.
     @GetMapping("/{id_client}/pets")

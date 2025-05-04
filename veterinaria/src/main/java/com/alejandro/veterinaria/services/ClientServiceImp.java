@@ -169,8 +169,8 @@ public class ClientServiceImp implements ClientService {
     // To get the address of certain client
     @Override
     @Transactional(readOnly = true)
-    public Address getAddressByClientId(Long id_client) {
-        return repository.getAddressByClientId(id_client);
+    public Optional<Address> getAddressByClientId(Client clientDb) {
+        return Optional.ofNullable(clientDb.getAddress());
     }
     
     // To get all the pets of certain client
