@@ -1,8 +1,6 @@
 package com.alejandro.veterinaria.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.services.ClientService;
+import com.alejandro.veterinaria.utils.UtilValidation;
 
 import jakarta.validation.Valid;
 
@@ -31,6 +29,9 @@ public class ClientController {
     // To Inject the service dependency
     @Autowired
     private ClientService service;
+
+    @Autowired
+    private UtilValidation utilValidation;
 
     // -----------------------------
     // Methods for client entity
@@ -60,7 +61,7 @@ public class ClientController {
     public ResponseEntity<?> saveClient(@Valid @RequestBody Client client, BindingResult result) {
         // To handle the obligations of object attributes
         if (result.hasFieldErrors()) {
-            return validation(result);
+            return utilValidation.validation(result);
         }
 
         // When a new client is created to respond return the same client
@@ -75,7 +76,7 @@ public class ClientController {
             @PathVariable Long id) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
-            return validation(result);
+            return utilValidation.validation(result);
         }
 
         // Find specific client and if it's present then return specific client
@@ -97,87 +98,6 @@ public class ClientController {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
         // Else return code response 404
-        return ResponseEntity.notFound().build();
-    }
-
-    // -----------------------------
-    // Methods for address entity
-    // -----------------------------
-
-    // To create an endpoint that allows invoking the method 'getAddressByClientId'.
-    @GetMapping("/{id_client}/address")
-    public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
-        // Search for a specific client and if it's present then return it.
-        Optional<Client> optionalClient = service.findById(id_client);
-
-        if (optionalClient.isPresent()) {
-
-            Optional<Address> optionalAddress = service.getAddressByClientId(optionalClient.get());
-
-            // If the address is present the return it.
-            if (optionalAddress.isPresent()) {
-                return ResponseEntity.ok(optionalAddress.get());
-            }
-
-            // Else returns code response 204 and a void body
-            return ResponseEntity.noContent().build();
-        }
-
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
-
-    // To create an endpoint that allows saving a new address of an certain client
-    @PostMapping("/{clientId}/address")
-    public ResponseEntity<?> saveNewAddressByClientId(@Valid @RequestBody Address newAddress, BindingResult result, @PathVariable Long clientId) {
-        // To handle of obligations of object attributes
-        if (result.hasFieldErrors()) {
-            return validation(result);
-        }
-
-        // Search for a specific client if it exists then save the address
-        Optional<Client> optionalClient = service.findById(clientId);
-
-        if (optionalClient.isPresent()) {
-            Client newClient = service.saveAddressByClientId(optionalClient.get(), newAddress);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
-    
-    // To create an endpoint that allows updating information of the address of a
-    // certain client
-    @PutMapping("/{clientId}/address")
-    public ResponseEntity<?> editAddressByClientId(@Valid @RequestBody Address editAddress, BindingResult result, @PathVariable Long clientId) {
-        // To handle of obligations of object attributes
-        if (result.hasFieldErrors()) {
-            return validation(result);
-        }
-
-        // Search for a specific client if it is present then edit the information about address
-        Optional<Client> optionalClient = service.findById(clientId);
-
-        if (optionalClient.isPresent()) {
-            Client updateClient = service.editAddressByClientId(optionalClient.get(), editAddress);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
-
-    // To create an endpoint that allows deleting a certain address of a certain client
-    @DeleteMapping("/{clientId}/address")
-    public ResponseEntity<?> deleteAddressByClientId(@PathVariable Long clientId) {
-
-        // Search for a specific client if it is present then delete a address
-        Optional<Client> optionalClient = service.findById(clientId);
-
-        if (optionalClient.isPresent()) {
-            Client updateClient = service.deleteAddressByClientId(optionalClient.get());
-            return ResponseEntity.ok(updateClient);
-        }
-        // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
 
@@ -224,19 +144,4 @@ public class ClientController {
         return ResponseEntity.notFound().build();
     }
 
-    // -----------------------------
-    // Method to validate
-    // -----------------------------
-
-    // To send a JSON object with messages about the obligations of each object
-    // attribute
-    private ResponseEntity<?> validation(BindingResult result) {
-        Map<String, String> errors = new HashMap<>();
-
-        result.getFieldErrors().forEach(e -> {
-            errors.put(e.getField(), "El campo " + e.getField() + " " + e.getDefaultMessage());
-        });
-
-        return ResponseEntity.badRequest().body(errors);
-    }
 }

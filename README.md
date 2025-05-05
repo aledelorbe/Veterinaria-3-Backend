@@ -66,6 +66,7 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 - `services/`: Carpeta donde se almacenan las clases que contienen el código relacionado con la lógica de negocio.
 - `repositories/`: Carpeta donde se almacenan las interfaces que extienden de una interfaz que permite el manejo de datos.
 - `entities/`: Carpeta donde se almacenan las clases que se mapean con sus respectivas tablas en la base de datos.
+- `utils/`: Carpeta donde se almacenan las clases las cuales tienen métodos utilitarios que se pueden usar de manera transversal en la aplicación.
 
 ## Futuras mejoras
 

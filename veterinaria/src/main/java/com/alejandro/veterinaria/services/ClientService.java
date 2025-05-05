@@ -3,7 +3,6 @@ package com.alejandro.veterinaria.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 
 public interface ClientService {
@@ -23,18 +22,6 @@ public interface ClientService {
     public Optional<Client> update(Long id, Client client);
     
     public Optional<Client> deleteById(Long id);
-    
-    // -----------------------------
-    // Methods for address entity
-    // -----------------------------
-
-    public Optional<Address> getAddressByClientId(Client clientDb);
-
-    public Client saveAddressByClientId(Client clientDb, Address newAddress);
-
-    public Client editAddressByClientId(Client clientDb, Address editAddress);
-
-    public Client deleteAddressByClientId(Client clientDb);
 
     // -----------------------------
     // Methods for custom queries of client entity
