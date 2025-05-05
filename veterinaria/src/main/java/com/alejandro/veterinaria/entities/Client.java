@@ -68,6 +68,19 @@ public class Client {
         this.pets = new ArrayList<>();
     }
 
+    public Client(Long id, @NotBlank String name, @NotBlank String lastname, 
+            @NotBlank @Email String email,
+            @Min(value = 1000000000, message = "{Min.client.phonenumber}") @Max(value = 9999999999L, message = "{Max.client.phonenumber}") @NotNull Long phonenumber,
+            List<Pet> pets, Address address) {
+        this.id = id;
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.phonenumber = phonenumber;
+        this.pets = pets;
+        this.address = address;
+    }
+
     public Long getId() {
         return id;
     }

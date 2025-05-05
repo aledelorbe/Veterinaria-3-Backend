@@ -37,6 +37,14 @@ public class Address {
     public Address() {
     }
 
+    public Address(Long id, @NotBlank String street, @NotBlank String state, @NotBlank String city, @NotNull Long cp) {
+        this.id = id;
+        this.street = street;
+        this.state = state;
+        this.city = city;
+        this.cp = cp;
+    }
+
     public Long getId() {
         return id;
     }

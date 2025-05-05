@@ -42,6 +42,16 @@ public class Pet {
     public Pet() {
     }
 
+    public Pet(Long id, @NotBlank String name, @NotBlank String specie, String breed, @NotNull Long age,
+            @NotBlank String reasonForVisit) {
+        this.id = id;
+        this.name = name;
+        this.specie = specie;
+        this.breed = breed;
+        this.age = age;
+        this.reasonForVisit = reasonForVisit;
+    }
+
     public Long getId() {
         return id;
     }
