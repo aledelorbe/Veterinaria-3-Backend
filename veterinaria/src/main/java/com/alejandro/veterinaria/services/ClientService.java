@@ -29,11 +29,13 @@ public interface ClientService {
     // Methods for pet entity
     // -----------------------------
     
+    public List<Pet> getPetsByClientId(Client clientDb);
+
     public Client savePetByClientId(Client clientDb, Pet newPet);
     
-    public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet);
+    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet);
     
-    public Client deletePetByClientId(Client clientDb, Pet petDb);
+    public Optional<Client> deletePetByClientId(Client clientDb, Long petId);
     
     // -----------------------------
     // Methods for address entity
@@ -51,8 +53,6 @@ public interface ClientService {
     // Methods for custom queries of client entity
     // -----------------------------
 
-    public List<Pet> getPetsByClientId(Long id_client);
-    
     public List<Client> findByNameContaining(String name);
 
     public List<Client> findByLastnameContaining(String lastname);

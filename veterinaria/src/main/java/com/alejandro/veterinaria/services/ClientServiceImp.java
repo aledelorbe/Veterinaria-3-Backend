@@ -87,6 +87,13 @@ public class ClientServiceImp implements ClientService {
     // Methods for pet entity
     // -----------------------------
 
+    // To get all the pets of certain client
+    @Override
+    @Transactional(readOnly = true)
+    public List<Pet> getPetsByClientId(Client clientDb) {
+        return clientDb.getPets();
+    }
+
     // To save a new pet of a certain client in the db
     @Override
     @Transactional
@@ -100,31 +107,59 @@ public class ClientServiceImp implements ClientService {
     // To update the information about the pet
     @Override
     @Transactional
-    public Client editPetByClientId(Client clientDb, Pet petDb, Pet editPet) {
+    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet) {
 
-        // update all of object attributes
-        petDb.setName(editPet.getName());
-        petDb.setSpecie(editPet.getSpecie());
-        petDb.setBreed(editPet.getBreed());
-        petDb.setAge(editPet.getAge());
-        petDb.setReasonForVisit(editPet.getReasonForVisit());
+        // Search for the pet that will be updated
+        Optional<Pet> optionalPet = clientDb.getPets().stream().filter(many -> many.getId().equals(petId)).findFirst();
 
-        return repository.save(clientDb);
+        // If this pet is present it means the client is owner of pet
+        if (optionalPet.isPresent()) {
+            // Update all of object attributes 
+            Pet petDb = optionalPet.get();
+
+            petDb.setName(editPet.getName());
+            petDb.setSpecie(editPet.getSpecie());
+            petDb.setBreed(editPet.getBreed());
+            petDb.setAge(editPet.getAge());
+            petDb.setReasonForVisit(editPet.getReasonForVisit());
+
+            // and save the information in the db
+            return Optional.of(repository.save(clientDb));
+        }
+
+        return Optional.empty();
     }
 
     // To delete a certain pet in the db
     @Override
     @Transactional
-    public Client deletePetByClientId(Client clientDb, Pet petDb) {
+    public Optional<Client> deletePetByClientId(Client clientDb, Long petId) {
 
-        clientDb.getPets().remove(petDb);
+        // Search for the pet that will be deleted
+        Optional<Pet> optionalPet = clientDb.getPets().stream().filter(many -> many.getId().equals(petId)).findFirst();
 
-        return repository.save(clientDb);
+        // If this pet is present it means the client is owner of pet
+        if (optionalPet.isPresent()) {
+            // Delete the pet
+            clientDb.getPets().remove(optionalPet.get());
+
+            // and save the information in the db
+            return Optional.of(repository.save(clientDb));
+        }
+
+        return Optional.empty();
     }
 
     // -----------------------------
     // Methods for address entity
     // -----------------------------
+
+    // To get the address of certain client
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Address> getAddressByClientId(Client clientDb) {
+        return Optional.ofNullable(clientDb.getAddress());
+    }
 
     // To save a new address of a certain client in the db
     @Override
@@ -165,20 +200,6 @@ public class ClientServiceImp implements ClientService {
     // -----------------------------
     // Methods for custom queries of client entity
     // -----------------------------
-
-    // To get the address of certain client
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Address> getAddressByClientId(Client clientDb) {
-        return Optional.ofNullable(clientDb.getAddress());
-    }
-    
-    // To get all the pets of certain client
-    @Override
-    @Transactional(readOnly = true)
-    public List<Pet> getPetsByClientId(Long id_client) {
-        return repository.getPetsByClientId(id_client);
-    }
 
     // To get all of the clients with a certain name
     @Override

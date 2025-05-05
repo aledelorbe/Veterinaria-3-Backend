@@ -110,6 +110,20 @@ public class ClientController {
     // Methods for pet entity
     // -----------------------------
 
+    // To create an endpoint that allows invoking the method 'getPetsByClientId'.
+    @GetMapping("/{id_client}/pets")
+    public ResponseEntity<?> getPetsByClientId(@PathVariable Long id_client) {
+        // Search for a specific client and if it's present then return it.
+        Optional<Client> optionalClient = service.findById(id_client);
+
+        if (optionalClient.isPresent()) {
+            return ResponseEntity.ok(service.getPetsByClientId(optionalClient.get()));
+        }
+
+        // Else returns code response 404
+        return ResponseEntity.notFound().build();
+    }
+
     // To create an endpoint that allows saving a new pet of an certain client
     @PostMapping("/{clientId}/pets")
     public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet newPet, BindingResult result,
@@ -126,6 +140,7 @@ public class ClientController {
             Client newClient = service.savePetByClientId(optionalClient.get(), newPet);
             return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
         }
+
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
@@ -145,10 +160,19 @@ public class ClientController {
         Optional<Client> optionalClient = service.findById(clientId);
         Optional<Pet> optionalPet = petService.findById(petId);
 
-        if (optionalClient.isPresent() && optionalPet.isPresent()) {
-            Client updateClient = service.editPetByClientId(optionalClient.get(), optionalPet.get(), editPet);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
+        if ( optionalClient.isPresent() && optionalPet.isPresent() ) {
+            Optional<Client> optionalUpdateClient = service.editPetByClientId(optionalClient.get(), petId, editPet);
+
+            // If the 'Optional Client Update' object is present, the pet was updated.
+            if (optionalUpdateClient.isPresent()) {
+                Client updateClient = optionalUpdateClient.get();
+                return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
+            } else {
+                // Else returns code response 404
+                return ResponseEntity.notFound().build();
+            }
         }
+
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
@@ -163,9 +187,19 @@ public class ClientController {
         Optional<Pet> optionalPet = petService.findById(petId);
 
         if (optionalClient.isPresent() && optionalPet.isPresent()) {
-            Client updateClient = service.deletePetByClientId(optionalClient.get(), optionalPet.get());
-            return ResponseEntity.ok(updateClient);
+            Optional<Client> optionalUpdateClient = service.deletePetByClientId(optionalClient.get(), petId);
+
+            // If the 'Optional Client Update' object is present, the pet was deleted.
+            if (optionalUpdateClient.isPresent()) {
+                Client updateClient = optionalUpdateClient.get();
+
+                return ResponseEntity.ok(updateClient);
+            } else {
+                // Else returns code response 404
+                return ResponseEntity.notFound().build();
+            }
         }
+
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
@@ -189,8 +223,8 @@ public class ClientController {
                 return ResponseEntity.ok(optionalAddress.get());
             }
 
-            // Else returns code response 404
-            return ResponseEntity.notFound().build();
+            // Else returns code response 204 and a void body
+            return ResponseEntity.noContent().build();
         }
 
         // Else returns code response 404
@@ -254,19 +288,6 @@ public class ClientController {
     // -----------------------------
     // Methods for custom queries of client entity
     // -----------------------------
-    
-    // To create an endpoint that allows invoking the method 'getPetsByClientId'.
-    @GetMapping("/{id_client}/pets")
-    public ResponseEntity<?> getPetsByClientId(@PathVariable Long id_client) {
-        // Search for a specific client and if it's present then return it.
-        Optional<Client> optionalClient = service.findById(id_client);
-
-        if (optionalClient.isPresent()) {
-            return ResponseEntity.ok(service.getPetsByClientId(id_client));
-        }
-        // Else returns code response 404
-        return ResponseEntity.notFound().build();
-    }
 
     // To create an endpoint that allows invoking the method findByName.
     @GetMapping("/name/{name}")

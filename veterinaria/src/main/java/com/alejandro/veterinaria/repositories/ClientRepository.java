@@ -6,21 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.alejandro.veterinaria.entities.Client;
-import com.alejandro.veterinaria.entities.Pet;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
     // ---------------------
     // Custom queries ------
     // ---------------------
-
-    // To get all the pets of certain client
-    @Query("""
-            SELECT cl.pets
-            FROM Client cl 
-            WHERE cl.id = ?1
-            """)
-    List<Pet> getPetsByClientId(Long id_client);
 
     // To search for a client by his name
     List<Client> findByNameContaining(String name);
