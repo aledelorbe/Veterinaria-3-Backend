@@ -7,4 +7,3 @@ import com.alejandro.veterinaria.entities.Pet;
 public interface PetRepository extends CrudRepository<Pet, Long> {
     
 }
-

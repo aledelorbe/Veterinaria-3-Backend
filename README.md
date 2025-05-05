@@ -69,7 +69,6 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 ## Futuras mejoras
 
-- Implementar la manera correcta de hacer CRUD sobre los objetos de las entidades mascotas y direcciones.
 - Despligue en AWS.
 
 ## Demo

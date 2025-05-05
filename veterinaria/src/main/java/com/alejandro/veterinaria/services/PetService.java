@@ -1,7 +1,9 @@
 package com.alejandro.veterinaria.services;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.entities.Pet;
 
 
@@ -9,6 +11,18 @@ public interface PetService {
 
     // Declaration of methods to use in 'serviceImp' file
 
+    // -----------------------------
+    // Methods for pet entity
+    // -----------------------------
+
     public Optional<Pet> findById(Long id);
+    
+    public List<Pet> getPetsByClientId(Client clientDb);
+
+    public Client savePetByClientId(Client clientDb, Pet newPet);
+    
+    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet);
+    
+    public Optional<Client> deletePetByClientId(Client clientDb, Long petId);
 
 }

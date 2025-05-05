@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
-import com.alejandro.veterinaria.entities.Pet;
 
 public interface ClientService {
 
@@ -24,18 +23,6 @@ public interface ClientService {
     public Optional<Client> update(Long id, Client client);
     
     public Optional<Client> deleteById(Long id);
-    
-    // -----------------------------
-    // Methods for pet entity
-    // -----------------------------
-    
-    public List<Pet> getPetsByClientId(Client clientDb);
-
-    public Client savePetByClientId(Client clientDb, Pet newPet);
-    
-    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet);
-    
-    public Optional<Client> deletePetByClientId(Client clientDb, Long petId);
     
     // -----------------------------
     // Methods for address entity
