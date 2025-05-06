@@ -38,7 +38,7 @@ public class PetServiceImp implements PetService {
     // To get all the pets of certain client
     @Override
     @Transactional(readOnly = true)
-    public List<Pet> getPetsByClientId(Client clientDb) {
+    public List<Pet> getPetsByClient(Client clientDb) {
         return clientDb.getPets();
     }
 

@@ -1,5 +1,6 @@
 package com.alejandro.veterinaria.data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,19 +44,19 @@ public class PetData {
     }
 
     public static List<Pet> createPets001() {
-        return Arrays.asList(createPet001());
+        return new ArrayList<>(Arrays.asList(createPet001()));
     }
 
     public static List<Pet> createPets002() {
-        return Arrays.asList(createPet002(), createPet003(), createPet009());
+        return new ArrayList<>(Arrays.asList(createPet002(), createPet003(), createPet009()));
     }
 
     public static List<Pet> createPets003() {
-        return Arrays.asList(createPet005(), createPet006());
+        return new ArrayList<>(Arrays.asList(createPet005(), createPet006()));
     }
 
     public static List<Pet> createPets004() {
-        return Arrays.asList(createPet007(), createPet008());
+        return new ArrayList<>(Arrays.asList(createPet007(), createPet008()));
     }
 
 }

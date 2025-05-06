@@ -17,7 +17,7 @@ public interface PetService {
 
     public Optional<Pet> findById(Long id);
     
-    public List<Pet> getPetsByClientId(Client clientDb);
+    public List<Pet> getPetsByClient(Client clientDb);
 
     public Client savePetByClientId(Client clientDb, Pet newPet);
     

@@ -49,7 +49,7 @@ public class PetController {
         Optional<Client> optionalClient = clientService.findById(id_client);
 
         if (optionalClient.isPresent()) {
-            return ResponseEntity.ok(service.getPetsByClientId(optionalClient.get()));
+            return ResponseEntity.ok(service.getPetsByClient(optionalClient.get()));
         }
 
         // Else returns code response 404
