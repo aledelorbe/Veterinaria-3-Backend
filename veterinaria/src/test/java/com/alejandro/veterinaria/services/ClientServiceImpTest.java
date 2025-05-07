@@ -44,7 +44,7 @@ class ClientServiceImpTest {
 
         // then
         assertNotNull(clients);
-        assertEquals(4, clients.size());
+        assertEquals(5, clients.size());
         assertEquals(2L, clients.get(1).getId());
         assertEquals("Hueto", clients.get(1).getName());
         assertEquals("Navejas", clients.get(1).getLastname());

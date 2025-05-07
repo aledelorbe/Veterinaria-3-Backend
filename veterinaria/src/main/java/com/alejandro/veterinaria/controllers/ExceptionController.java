@@ -15,7 +15,7 @@ import com.alejandro.veterinaria.entities.ErrorMessage;
 public class ExceptionController {
 
     @ExceptionHandler({ DataIntegrityViolationException.class })
-    public ResponseEntity<ErrorMessage> clientDuplicate(Exception e) {
+    public ResponseEntity<ErrorMessage> duplicate(Exception e) {
 
         // To know which entity fires the 'DataIntegrityViolationException'
         String errorMessage;
