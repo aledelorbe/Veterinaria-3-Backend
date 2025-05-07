@@ -19,10 +19,10 @@ public interface PetService {
     
     public List<Pet> getPetsByClient(Client clientDb);
 
-    public Client savePetByClientId(Client clientDb, Pet newPet);
+    public Client savePetByClient(Client clientDb, Pet newPet);
     
-    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet);
+    public Optional<Client> editPetByClient(Client clientDb, Long petId, Pet editPet);
     
-    public Optional<Client> deletePetByClientId(Client clientDb, Long petId);
+    public Optional<Client> deletePetByClient(Client clientDb, Long petId);
 
 }

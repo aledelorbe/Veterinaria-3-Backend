@@ -86,17 +86,15 @@ class PetServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, false)));
     }
 
-    // To test the method getPetsByClientId
+    // To test the method getPetsByClient
     @Test
-    void getPetsByClientIdTest() {
+    void getPetsByClientTest() {
         
         // Given
-        Long idToSearch = 4L;
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
+        Client clientDb = ClientData.createClient004();
 
         // when
-        Optional<Client> optionalClient = clientService.findById(idToSearch);
-        List<Pet> pets = service.getPetsByClient(optionalClient.get());
+        List<Pet> pets = service.getPetsByClient(clientDb);
 
         // then
         assertNotNull(pets);
@@ -107,13 +105,11 @@ class PetServiceImpTest {
         assertEquals("labrador", pets.get(1).getBreed());
         assertEquals(10L, pets.get(1).getAge());
         assertEquals("tiene mucho sueño", pets.get(1).getReasonForVisit());
-
-        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the method savePetByClientId
+    // To test the method savePetByClient
     @Test
-    void savePetByClientIdTest() {
+    void savePetByClientTest() {
     
         // Given
         Client clientDb = ClientData.createClient004();
@@ -121,17 +117,21 @@ class PetServiceImpTest {
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
         
         // when
-        Client newClient = service.savePetByClientId(clientDb, petInsert);
+        Client newClient = service.savePetByClient(clientDb, petInsert);
         
         // then
+        int size = newClient.getPets().size();
+        List<Pet> pets = newClient.getPets();
+
+        assertNotNull(newClient);
+        assertEquals(4L, newClient.getId());
         assertEquals("Esteban", newClient.getName());
         assertEquals("Gonzalez", newClient.getLastname());
         assertEquals("pastor34@idoidraw.com", newClient.getEmail());
         assertEquals(1234567890L, newClient.getPhonenumber());
 
-        int size = newClient.getPets().size();
-        List<Pet> pets = newClient.getPets();
-
+        assertNotNull(pets);
+        assertEquals(3, size);
         assertEquals("lince intergalactico", pets.get(size - 1).getName());
         assertEquals("lince", pets.get(size - 1).getSpecie());
         assertNull(pets.get(size - 1).getBreed());
@@ -141,26 +141,30 @@ class PetServiceImpTest {
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the method editPetByClientId when we use an existing id
+    // To test the method editPetByClient when we use an existing id
     @Test
-    void editPetByClientIdExistingIdTest() {
+    void editPetByClientExistingIdTest() {
         
         // Given
-        Long idToSearch = 80L;
         Client clientDb = ClientData.createClient004();
+        Long idToSearch = 80L;
         Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // When
-        Optional<Client> optionalClient = service.editPetByClientId(clientDb, idToSearch, petToUpdate);
+        Optional<Client> optionalClient = service.editPetByClient(clientDb, idToSearch, petToUpdate);
 
         // then
-        assertEquals("Esteban", optionalClient.get().getName());
-        assertEquals("Gonzalez", optionalClient.get().getLastname());
-        assertEquals("pastor34@idoidraw.com", optionalClient.get().getEmail());
-        assertEquals(1234567890L, optionalClient.get().getPhonenumber());
+        Client newClientDb = optionalClient.get();
 
-        Pet petUpdated = optionalClient.get().getPets().get(1);
+        assertNotNull(newClientDb);
+        assertEquals(4L, newClientDb.getId());
+        assertEquals("Esteban", newClientDb.getName());
+        assertEquals("Gonzalez", newClientDb.getLastname());
+        assertEquals("pastor34@idoidraw.com", newClientDb.getEmail());
+        assertEquals(1234567890L, newClientDb.getPhonenumber());
+
+        Pet petUpdated = newClientDb.getPets().get(1);
 
         assertEquals("lince update", petUpdated.getName());
         assertEquals("reptil", petUpdated.getSpecie());
@@ -171,9 +175,9 @@ class PetServiceImpTest {
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the method editPetByClientId when we use an inexisting id
+    // To test the method editPetByClient when we use an inexisting id
     @Test
-    void editPetByClientIdInexistingIdTest() {
+    void editPetByClientInexistingIdTest() {
         
         // Given
         Long idToSearch = 9999L;
@@ -181,7 +185,7 @@ class PetServiceImpTest {
         Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         
         // When
-        Optional<Client> optionalClient = service.editPetByClientId(clientDb, idToSearch, petToUpdate);
+        Optional<Client> optionalClient = service.editPetByClient(clientDb, idToSearch, petToUpdate);
 
         // Then
         assertFalse(optionalClient.isPresent());
@@ -192,68 +196,64 @@ class PetServiceImpTest {
         verify(clientRepository, never()).save(any(Client.class));
     }
 
-    // To test the method deletePetByClientId when we use an existing id
+    // To test the method deletePetByClient when we use an existing id
     @Test
-    void deletePetByClientIdExistingIdTest() {
+    void deletePetByClientExistingIdTest() {
         
         // Given
-        Long clientIdToSearch = 4L;
+        Client clientDb = ClientData.createClient004();
         Long petIdToSearch = 80L;
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // when
-        Optional<Client> optionalClient = clientService.findById(clientIdToSearch);
-        List<Pet> pets = service.getPetsByClient(optionalClient.get());
+        // when: get pets (first time)
+        List<Pet> pets = service.getPetsByClient(clientDb);
 
         // then
         assertNotNull(pets);
         assertEquals(2, pets.size());
 
-        // when
-        Optional<Client> optionalClient2 = service.deletePetByClientId(optionalClient.get(), petIdToSearch);
+        // when: Delete a pet and get pets (first time)
+        Optional<Client> optionalClient2 = service.deletePetByClient(clientDb, petIdToSearch);
         List<Pet> pets2 = service.getPetsByClient(optionalClient2.get());
 
         // then
         assertNotNull(pets2);
         assertEquals(1, pets2.size());
 
-        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the method deletePetByClientId when we use an inexisting id
+    // To test the method deletePetByClient when we use an inexisting id
     @Test
-    void deletePetByClientIdInexistingIdTest() {
+    void deletePetByClientInexistingIdTest() {
         
         // Given
-        Long clientIdToSearch = 4L;
+        Client clientDb = ClientData.createClient004();
         Long petIdToSearch = 999999L;
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
 
         // when: get pets (first time)
-        Optional<Client> optionalClient = clientService.findById(clientIdToSearch);
-        List<Pet> pets = service.getPetsByClient(optionalClient.get());
+        List<Pet> pets = service.getPetsByClient(clientDb);
 
         // then
         assertNotNull(pets);
         assertEquals(2, pets.size());
 
         // when: delete
-        Optional<Client> optionalClient2 = service.deletePetByClientId(optionalClient.get(), petIdToSearch);
+        Optional<Client> optionalClient2 = service.deletePetByClient(clientDb, petIdToSearch);
 
         // then
         assertFalse(optionalClient2.isPresent());
+        assertThrows(NoSuchElementException.class, () -> {
+            optionalClient2.orElseThrow();
+        });
 
         // when: get pets (Second time)
-        Optional<Client> optionalClient3 = clientService.findById(clientIdToSearch);
-        List<Pet> pets2 = service.getPetsByClient(optionalClient3.get());
+        List<Pet> pets2 = service.getPetsByClient(clientDb);
 
         // then
         assertNotNull(pets2);
         assertEquals(2, pets2.size());
 
-        verify(clientRepository, times(2)).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 

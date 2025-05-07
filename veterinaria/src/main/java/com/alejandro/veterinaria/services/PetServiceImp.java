@@ -45,7 +45,7 @@ public class PetServiceImp implements PetService {
     // To save a new pet of a certain client in the db
     @Override
     @Transactional
-    public Client savePetByClientId(Client clientDb, Pet newPet) {
+    public Client savePetByClient(Client clientDb, Pet newPet) {
 
         clientDb.getPets().add(newPet);
 
@@ -55,7 +55,7 @@ public class PetServiceImp implements PetService {
     // To update the information about the pet
     @Override
     @Transactional
-    public Optional<Client> editPetByClientId(Client clientDb, Long petId, Pet editPet) {
+    public Optional<Client> editPetByClient(Client clientDb, Long petId, Pet editPet) {
 
         // Search for the pet that will be updated
         Optional<Pet> optionalPet = clientDb.getPets().stream().filter(many -> many.getId().equals(petId)).findFirst();
@@ -81,7 +81,7 @@ public class PetServiceImp implements PetService {
     // To delete a certain pet in the db
     @Override
     @Transactional
-    public Optional<Client> deletePetByClientId(Client clientDb, Long petId) {
+    public Optional<Client> deletePetByClient(Client clientDb, Long petId) {
 
         // Search for the pet that will be deleted
         Optional<Pet> optionalPet = clientDb.getPets().stream().filter(many -> many.getId().equals(petId)).findFirst();

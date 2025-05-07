@@ -44,7 +44,7 @@ public class PetController {
 
     // To create an endpoint that allows invoking the method 'getPetsByClientId'.
     @GetMapping("/{id_client}/pets")
-    public ResponseEntity<?> getPetsByClientId(@PathVariable Long id_client) {
+    public ResponseEntity<?> getPetsByClient(@PathVariable Long id_client) {
         // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = clientService.findById(id_client);
 
@@ -58,7 +58,7 @@ public class PetController {
 
     // To create an endpoint that allows saving a new pet of an certain client
     @PostMapping("/{clientId}/pets")
-    public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet newPet, BindingResult result,
+    public ResponseEntity<?> saveNewPetByClient(@Valid @RequestBody Pet newPet, BindingResult result,
             @PathVariable Long clientId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
@@ -69,7 +69,7 @@ public class PetController {
         Optional<Client> optionalClient = clientService.findById(clientId);
 
         if (optionalClient.isPresent()) {
-            Client newClient = service.savePetByClientId(optionalClient.get(), newPet);
+            Client newClient = service.savePetByClient(optionalClient.get(), newPet);
             return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
         }
 
@@ -80,7 +80,7 @@ public class PetController {
     // To create an endpoint that allows updating information of a certain pet of a
     // certain client
     @PutMapping("/{clientId}/pets/{petId}")
-    public ResponseEntity<?> editPetByClientId(@Valid @RequestBody Pet editPet, BindingResult result,
+    public ResponseEntity<?> editPetByClient(@Valid @RequestBody Pet editPet, BindingResult result,
             @PathVariable Long clientId, @PathVariable Long petId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
@@ -93,7 +93,7 @@ public class PetController {
         Optional<Pet> optionalPet = service.findById(petId);
 
         if ( optionalClient.isPresent() && optionalPet.isPresent() ) {
-            Optional<Client> optionalUpdateClient = service.editPetByClientId(optionalClient.get(), petId, editPet);
+            Optional<Client> optionalUpdateClient = service.editPetByClient(optionalClient.get(), petId, editPet);
 
             // If the 'Optional Client Update' object is present, the pet was updated.
             if (optionalUpdateClient.isPresent()) {
@@ -111,7 +111,7 @@ public class PetController {
 
     // To create an endpoint that allows deleting a certain pet of a certain client
     @DeleteMapping("/{clientId}/pets/{petId}")
-    public ResponseEntity<?> deletePetByClientId(@PathVariable Long clientId, @PathVariable Long petId) {
+    public ResponseEntity<?> deletePetByClient(@PathVariable Long clientId, @PathVariable Long petId) {
 
         // Search for a specific client and specific pet and if they are present then
         // delete a pet
@@ -119,7 +119,7 @@ public class PetController {
         Optional<Pet> optionalPet = service.findById(petId);
 
         if (optionalClient.isPresent() && optionalPet.isPresent()) {
-            Optional<Client> optionalUpdateClient = service.deletePetByClientId(optionalClient.get(), petId);
+            Optional<Client> optionalUpdateClient = service.deletePetByClient(optionalClient.get(), petId);
 
             // If the 'Optional Client Update' object is present, the pet was deleted.
             if (optionalUpdateClient.isPresent()) {
