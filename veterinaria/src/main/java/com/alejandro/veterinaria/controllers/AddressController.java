@@ -42,15 +42,15 @@ public class AddressController {
     // Methods for address entity
     // -----------------------------
 
-    // To create an endpoint that allows invoking the method 'getAddressByClientId'.
+    // To create an endpoint that allows invoking the method 'getAddressByClient'.
     @GetMapping("/{id_client}/address")
-    public ResponseEntity<?> getAddressByClientId(@PathVariable Long id_client) {
+    public ResponseEntity<?> getAddressByClient(@PathVariable Long id_client) {
         // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = clientService.findById(id_client);
 
         if (optionalClient.isPresent()) {
 
-            Optional<Address> optionalAddress = service.getAddressByClientId(optionalClient.get());
+            Optional<Address> optionalAddress = service.getAddressByClient(optionalClient.get());
 
             // If the address is present the return it.
             if (optionalAddress.isPresent()) {
@@ -77,7 +77,7 @@ public class AddressController {
         Optional<Client> optionalClient = clientService.findById(clientId);
 
         if (optionalClient.isPresent()) {
-            Client newClient = service.saveAddressByClientId(optionalClient.get(), newAddress);
+            Client newClient = service.saveAddressByClient(optionalClient.get(), newAddress);
             return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
         }
         // Else returns code response 404
@@ -97,7 +97,7 @@ public class AddressController {
         Optional<Client> optionalClient = clientService.findById(clientId);
 
         if (optionalClient.isPresent()) {
-            Client updateClient = service.editAddressByClientId(optionalClient.get(), editAddress);
+            Client updateClient = service.editAddressByClient(optionalClient.get(), editAddress);
             return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
         }
         // Else returns code response 404
@@ -112,7 +112,7 @@ public class AddressController {
         Optional<Client> optionalClient = clientService.findById(clientId);
 
         if (optionalClient.isPresent()) {
-            Client updateClient = service.deleteAddressByClientId(optionalClient.get());
+            Client updateClient = service.deleteAddressByClient(optionalClient.get());
             return ResponseEntity.ok(updateClient);
         }
         // Else returns code response 404

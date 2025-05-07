@@ -43,7 +43,7 @@ class PetServiceImpTest {
     @InjectMocks
     ClientServiceImp clientService;
 
-    // To test the metod findById when we use an existing id
+    // To test the method findById when we use an existing id
     @Test
     void findByIdExistingIdTest() {
 
@@ -66,7 +66,7 @@ class PetServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
     }
 
-    // To test the metod findById when we use an inexisting id
+    // To test the method findById when we use an inexisting id
     @Test
     void findByIdInexistingIdTest() {
 
@@ -86,7 +86,7 @@ class PetServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, false)));
     }
 
-    // To test the metod getPetsByClientId
+    // To test the method getPetsByClientId
     @Test
     void getPetsByClientIdTest() {
         
@@ -111,7 +111,7 @@ class PetServiceImpTest {
         verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the metod savePetByClientId
+    // To test the method savePetByClientId
     @Test
     void savePetByClientIdTest() {
     
@@ -141,7 +141,7 @@ class PetServiceImpTest {
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the metod editPetByClientId when we use an existing id
+    // To test the method editPetByClientId when we use an existing id
     @Test
     void editPetByClientIdExistingIdTest() {
         
@@ -171,7 +171,7 @@ class PetServiceImpTest {
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the metod editPetByClientId when we use an inexisting id
+    // To test the method editPetByClientId when we use an inexisting id
     @Test
     void editPetByClientIdInexistingIdTest() {
         
@@ -192,7 +192,7 @@ class PetServiceImpTest {
         verify(clientRepository, never()).save(any(Client.class));
     }
 
-    // To test the metod deletePetByClientId when we use an existing id
+    // To test the method deletePetByClientId when we use an existing id
     @Test
     void deletePetByClientIdExistingIdTest() {
         
@@ -222,7 +222,7 @@ class PetServiceImpTest {
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the metod deletePetByClientId when we use an inexisting id
+    // To test the method deletePetByClientId when we use an inexisting id
     @Test
     void deletePetByClientIdInexistingIdTest() {
         

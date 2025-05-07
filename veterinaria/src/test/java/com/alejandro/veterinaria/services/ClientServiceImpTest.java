@@ -32,7 +32,7 @@ class ClientServiceImpTest {
     @InjectMocks
     ClientServiceImp service;
 
-    // To test the metod findAll
+    // To test the method findAll
     @Test
     void findAllTest() {
 
@@ -54,7 +54,7 @@ class ClientServiceImpTest {
         verify(repository).findAll();
     }
 
-    // To test the metod findById when we use an existing id
+    // To test the method findById when we use an existing id
     @Test
     void findByIdExistingIdTest() {
 
@@ -75,7 +75,7 @@ class ClientServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the metod findById when we use an inexisting id
+    // To test the method findById when we use an inexisting id
     @Test
     void findByIdInexistingIdTest() {
 
@@ -94,7 +94,7 @@ class ClientServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
     }
 
-    // To test the metod save
+    // To test the method save
     @Test
     void saveTest() {
 
@@ -114,7 +114,7 @@ class ClientServiceImpTest {
         verify(repository).save(any(Client.class));
     }
 
-    // To test the metod update when we use an existing id
+    // To test the method update when we use an existing id
     @Test
     void updateExistingIdTest() {
 
@@ -139,7 +139,7 @@ class ClientServiceImpTest {
         verify(repository).save(any(Client.class));
     }
 
-    // To test the metod update when we use an inexisting id
+    // To test the method update when we use an inexisting id
     @Test
     void updateInexistingIdTest() {
 
@@ -160,7 +160,7 @@ class ClientServiceImpTest {
         verify(repository, never()).save(any(Client.class));
     }
 
-    // To test the metod delete when we use an existing id
+    // To test the method delete when we use an existing id
     @Test
     void deleteExistingIdTest() {
 
@@ -182,7 +182,7 @@ class ClientServiceImpTest {
         verify(repository).deleteById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the metod delete when we use an inexisting id
+    // To test the method delete when we use an inexisting id
     @Test
     void deleteInexistingIdTest() {
 

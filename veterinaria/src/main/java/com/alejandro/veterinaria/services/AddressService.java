@@ -13,12 +13,12 @@ public interface AddressService {
     // Methods for address entity
     // -----------------------------
 
-    public Optional<Address> getAddressByClientId(Client clientDb);
+    public Optional<Address> getAddressByClient(Client clientDb);
 
-    public Client saveAddressByClientId(Client clientDb, Address newAddress);
+    public Client saveAddressByClient(Client clientDb, Address newAddress);
 
-    public Client editAddressByClientId(Client clientDb, Address editAddress);
+    public Client editAddressByClient(Client clientDb, Address editAddress);
 
-    public Client deleteAddressByClientId(Client clientDb);
+    public Client deleteAddressByClient(Client clientDb);
     
 }

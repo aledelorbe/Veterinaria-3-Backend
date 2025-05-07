@@ -8,7 +8,7 @@ import com.alejandro.veterinaria.entities.Client;
 // The class that contains the data to be mocked in the service and controller methods
 public class ClientData {
     
-    public static final List<Long> idsValid = Arrays.asList(1L, 2L, 3L, 4L);
+    public static final List<Long> idsValid = Arrays.asList(1L, 2L, 3L, 4L, 5L);
 
     public static Client createClient001() {
         return new Client(idsValid.get(0), "Alejandro", "Granados", "alejandro.magb@gmail.com", 1538977020L, PetData.createPets001(), AddressData.createAddress001());
@@ -26,8 +26,12 @@ public class ClientData {
         return new Client(idsValid.get(3), "Esteban", "Gonzalez", "pastor34@idoidraw.com", 1234567890L, PetData.createPets004(), AddressData.createAddress004());
     }
 
+    public static Client createClient005() {
+        return new Client(idsValid.get(4), "John", "Lennon", "lennon@idoidraw.com", 45208954L, null, null);
+    }
+
     public static List<Client> createClients001() {
-        return Arrays.asList(createClient001(), createClient002(), createClient003(), createClient004());
+        return Arrays.asList(createClient001(), createClient002(), createClient003(), createClient004(), createClient005());
     }
 
 }

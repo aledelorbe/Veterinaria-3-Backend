@@ -13,7 +13,7 @@ public class AddressServiceImp implements AddressService {
     
     // To inject the repository dependency.
     @Autowired
-    private ClientRepository repository;
+    private ClientRepository clientRepository;
 
     // -----------------------------
     // Methods for address entity
@@ -22,24 +22,24 @@ public class AddressServiceImp implements AddressService {
     // To get the address of certain client
     @Override
     @Transactional(readOnly = true)
-    public Optional<Address> getAddressByClientId(Client clientDb) {
+    public Optional<Address> getAddressByClient(Client clientDb) {
         return Optional.ofNullable(clientDb.getAddress());
     }
 
     // To save a new address of a certain client in the db
     @Override
     @Transactional
-    public Client saveAddressByClientId(Client clientDb, Address newAddress) {
+    public Client saveAddressByClient(Client clientDb, Address newAddress) {
 
         clientDb.setAddress(newAddress);
 
-        return repository.save(clientDb);
+        return clientRepository.save(clientDb);
     }
 
     // To update the information about the address
     @Override
     @Transactional
-    public Client editAddressByClientId(Client clientDb, Address editAddress) {
+    public Client editAddressByClient(Client clientDb, Address editAddress) {
 
         Address addressDb = clientDb.getAddress();
 
@@ -49,17 +49,17 @@ public class AddressServiceImp implements AddressService {
         addressDb.setCity(editAddress.getCity());
         addressDb.setCp(editAddress.getCp());
 
-        return repository.save(clientDb);
+        return clientRepository.save(clientDb);
     }
 
     // To delete a certain address in the db
     @Override
     @Transactional
-    public Client deleteAddressByClientId(Client clientDb) {
+    public Client deleteAddressByClient(Client clientDb) {
 
         clientDb.setAddress(null);
 
-        return repository.save(clientDb);
+        return clientRepository.save(clientDb);
     }
 
 }
