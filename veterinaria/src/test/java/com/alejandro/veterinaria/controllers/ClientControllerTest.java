@@ -55,16 +55,16 @@ class ClientControllerTest {
         MvcResult result = mockMvc.perform(get("/api/clients"))
 
         // Then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(5)))
-        .andExpect(jsonPath("$[0].id").value(1L))
-        .andExpect(jsonPath("$[0].name").value("Alejandro"))
-        .andExpect(jsonPath("$[0].lastname").value("Granados"))
-        .andExpect(jsonPath("$[0].email").value("alejandro.magb@gmail.com"))
-        .andExpect(jsonPath("$[0].phonenumber").value(1538977020L))
-        .andReturn()
-        ;
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(5)))
+            .andExpect(jsonPath("$[0].id").value(1L))
+            .andExpect(jsonPath("$[0].name").value("Alejandro"))
+            .andExpect(jsonPath("$[0].lastname").value("Granados"))
+            .andExpect(jsonPath("$[0].email").value("alejandro.magb@gmail.com"))
+            .andExpect(jsonPath("$[0].phonenumber").value(1538977020L))
+            .andReturn()
+            ;
 
         // Convert the response to a list of objects
         String jsonString = result.getResponse().getContentAsString();

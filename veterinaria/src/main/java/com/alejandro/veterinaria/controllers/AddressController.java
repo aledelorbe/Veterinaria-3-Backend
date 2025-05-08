@@ -43,7 +43,7 @@ public class AddressController {
     // -----------------------------
 
     // To create an endpoint that allows invoking the method 'getAddressByClient'.
-    @GetMapping("/{id_client}/address")
+    @GetMapping("/{id_client}/addresses")
     public ResponseEntity<?> getAddressByClient(@PathVariable Long id_client) {
         // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = clientService.findById(id_client);
@@ -66,7 +66,7 @@ public class AddressController {
     }
 
     // To create an endpoint that allows saving a new address of an certain client
-    @PostMapping("/{clientId}/address")
+    @PostMapping("/{clientId}/addresses")
     public ResponseEntity<?> saveNewAddressByClientId(@Valid @RequestBody Address newAddress, BindingResult result, @PathVariable Long clientId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
@@ -86,7 +86,7 @@ public class AddressController {
     
     // To create an endpoint that allows updating information of the address of a
     // certain client
-    @PutMapping("/{clientId}/address")
+    @PutMapping("/{clientId}/addresses")
     public ResponseEntity<?> editAddressByClientId(@Valid @RequestBody Address editAddress, BindingResult result, @PathVariable Long clientId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {
@@ -105,7 +105,7 @@ public class AddressController {
     }
 
     // To create an endpoint that allows deleting a certain address of a certain client
-    @DeleteMapping("/{clientId}/address")
+    @DeleteMapping("/{clientId}/addresses")
     public ResponseEntity<?> deleteAddressByClientId(@PathVariable Long clientId) {
 
         // Search for a specific client if it is present then delete a address

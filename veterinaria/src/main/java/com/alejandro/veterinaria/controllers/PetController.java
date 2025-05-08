@@ -58,7 +58,7 @@ public class PetController {
 
     // To create an endpoint that allows saving a new pet of an certain client
     @PostMapping("/{clientId}/pets")
-    public ResponseEntity<?> saveNewPetByClient(@Valid @RequestBody Pet newPet, BindingResult result,
+    public ResponseEntity<?> saveNewPetByClientId(@Valid @RequestBody Pet newPet, BindingResult result,
             @PathVariable Long clientId) {
         // To handle of obligations of object attributes
         if (result.hasFieldErrors()) {

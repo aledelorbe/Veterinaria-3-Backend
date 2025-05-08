@@ -58,18 +58,18 @@ class AddressControllerTest {
         when(service.getAddressByClient(any(Client.class))).thenReturn(Optional.of(AddressData.createAddress002()));
 
         // When
-        MvcResult result = mockMvc.perform(get("/api/clients/" + idClientToSearch + "/address"))
+        MvcResult result = mockMvc.perform(get("/api/clients/" + idClientToSearch + "/addresses"))
 
         // Then
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$").isNotEmpty())
-        .andExpect(jsonPath("$.id").value(200L))
-        .andExpect(jsonPath("$.street").value("av. siempre viva"))
-        .andExpect(jsonPath("$.state").value("venustiano carranza"))
-        .andExpect(jsonPath("$.city").value("cdmx"))
-        .andExpect(jsonPath("$.cp").value(56512L))
-        .andReturn()
-        ;
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isNotEmpty())
+            .andExpect(jsonPath("$.id").value(200L))
+            .andExpect(jsonPath("$.street").value("av. siempre viva"))
+            .andExpect(jsonPath("$.state").value("venustiano carranza"))
+            .andExpect(jsonPath("$.city").value("cdmx"))
+            .andExpect(jsonPath("$.cp").value(56512L))
+            .andReturn()
+            ;
 
         // Convert the response to an object
         String jsonString = result.getResponse().getContentAsString();
@@ -96,7 +96,7 @@ class AddressControllerTest {
         when(service.getAddressByClient(any(Client.class))).thenReturn(Optional.empty());
 
         // When
-        mockMvc.perform(get("/api/clients/" + idClientToSearch + "/address"))
+        mockMvc.perform(get("/api/clients/" + idClientToSearch + "/addresses"))
 
         // Then
             .andExpect(status().isNoContent())
@@ -107,7 +107,7 @@ class AddressControllerTest {
         verify(service).getAddressByClient(any(Client.class));
     }
     
-    // To test the endpoint getAddressByClientTest with an inexisting id
+    // To test the endpoint getAddressByClient with an inexisting id
     @Test
     void getAddressByClientInexistingIdTest() throws Exception {
         
@@ -116,17 +116,18 @@ class AddressControllerTest {
         when(clientService.findById(anyLong())).thenReturn(Optional.empty());
         
         // When
-        mockMvc.perform(get("/api/clients/" + idClientToSearch + "/address"))
+        mockMvc.perform(get("/api/clients/" + idClientToSearch + "/addresses"))
         
         // Then
-        .andExpect(status().isNotFound())
-        .andExpect(content().string(""))
-        ;
+            .andExpect(status().isNotFound())
+            .andExpect(content().string(""))
+            ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(service, never()).getAddressByClient(any(Client.class));
     }
 
-    // To test the endpoint save when the idClient exists
+    // To test the endpoint saveNewAddressByClientId when the idClient exists
     @Test
     void postSaveNewAddressByClientIdExistingIdTest() throws Exception {
 
@@ -137,7 +138,7 @@ class AddressControllerTest {
         Address addressToInsert = new Address(null, "independencia", "huchapan", "hidalgo", 45555L);
         
         // When
-        MvcResult result = mockMvc.perform(post("/api/clients/" + idClientToSearch + "/address")
+        MvcResult result = mockMvc.perform(post("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(addressToInsert)))
 
@@ -167,7 +168,7 @@ class AddressControllerTest {
         verify(service).saveAddressByClient(any(Client.class), any(Address.class));
     }
 
-    // To test the endpoint save when the idClient doesnt exist
+    // To test the endpoint saveNewAddressByClientId when the idClient doesnt exist
     @Test
     void postSaveNewAddressByClientIdInexistingIdTest() throws Exception {
 
@@ -177,16 +178,17 @@ class AddressControllerTest {
         Address addressToInsert = new Address(null, "independencia", "huchapan", "hidalgo", 45555L);
         
         // When
-        mockMvc.perform(post("/api/clients/" + idClientToSearch + "/address")
+        mockMvc.perform(post("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(addressToInsert)))
         
         // Then
-        .andExpect(status().isNotFound())
-        .andExpect(content().string(""))
+            .andExpect(status().isNotFound())
+            .andExpect(content().string(""))
         ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(service, never()).saveAddressByClient(any(Client.class), any(Address.class));
     }
 
     // To test the endpoint editAddressByClientId when the idClient exists
@@ -200,7 +202,7 @@ class AddressControllerTest {
         Address addressToUpdate = new Address(null, "san pancho", "chalco", "estado de mexico", 301245L);
         
         // When
-        MvcResult result = mockMvc.perform(put("/api/clients/" + idClientToSearch + "/address")
+        MvcResult result = mockMvc.perform(put("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(addressToUpdate)))
         
@@ -240,7 +242,7 @@ class AddressControllerTest {
         Address addressToUpdate = new Address(null, "san pancho", "chalco", "estado de mexico", 301245L);
         
         // When
-        mockMvc.perform(put("/api/clients/" + idClientToSearch + "/address")
+        mockMvc.perform(put("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(addressToUpdate)))
         
@@ -250,6 +252,7 @@ class AddressControllerTest {
         ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(service, never()).editAddressByClient(any(Client.class), any(Address.class));
     }
 
     // To test the endpoint deleteAddressByClientId when we use an existing id 
@@ -262,7 +265,7 @@ class AddressControllerTest {
         when(service.deleteAddressByClient(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // When
-        MvcResult result = mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/address"))
+        MvcResult result = mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/addresses"))
         
         // Then
             .andExpect(status().isOk())
@@ -299,7 +302,7 @@ class AddressControllerTest {
         when(clientService.findById(anyLong())).thenReturn(Optional.empty());
         
         // When
-        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/address")
+        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON))
         
         // Then
@@ -308,6 +311,7 @@ class AddressControllerTest {
             ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(service, never()).deleteAddressByClient(any(Client.class));
     }
 
     // To test the method validation
@@ -319,7 +323,7 @@ class AddressControllerTest {
         Address addressInsert = new Address(null, "", "", "", null);
         
         // when
-        mockMvc.perform(post("/api/clients/" + idClientToSearch + "/address")
+        mockMvc.perform(post("/api/clients/" + idClientToSearch + "/addresses")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(addressInsert)))
         

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -34,6 +35,7 @@ public class Pet {
     private String breed;
     
     @NotNull // To obligate to this attribute not to empty
+    @Min(value = 1)
     private Long age;
 
     @NotBlank // To obligate to this attribute not to empty or blank values.

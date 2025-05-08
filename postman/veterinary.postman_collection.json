@@ -18,7 +18,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/pets",
+									"raw": "http://localhost:8081/api/clients/6/pets",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -27,7 +27,7 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
+										"6",
 										"pets"
 									]
 								}
@@ -41,7 +41,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"goliath\",\r\n    \"specie\": \"dog\",\r\n    \"age\": 8,\r\n    \"reasonForVisit\": \"tiene vomito\"\r\n}",
+									"raw": "{\r\n    \"name\": \" bola de nieve 1 \",\r\n    \"specie\": \" bola de nieve 1 \",\r\n    \"age\": 8,\r\n    \"reasonForVisit\": \" tiene vomito1 \"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -49,7 +49,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/pets",
+									"raw": "http://localhost:8081/api/clients/6/pets",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -58,31 +58,8 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
+										"6",
 										"pets"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "pet",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:8081/api/clients/1/pets/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8081",
-									"path": [
-										"api",
-										"clients",
-										"1",
-										"pets",
-										"1"
 									]
 								}
 							},
@@ -95,7 +72,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"goliath\",\r\n    \"specie\": \"dog\",\r\n    \"age\": 8,\r\n    \"reasonForVisit\": \"tiene vomito\"\r\n}",
+									"raw": "{\r\n    \"name\": \" bola de nieve 2  \",\r\n    \"specie\": \" bola de nieve 2 \",\r\n    \"age\": 8,\r\n    \"reasonForVisit\": \"tiene vomito2 \"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -103,7 +80,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/pets/1",
+									"raw": "http://localhost:8081/api/clients/6/pets/12",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -112,9 +89,32 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
+										"6",
 										"pets",
-										"1"
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pet",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/clients/6/pets/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"clients",
+										"6",
+										"pets",
+										"12"
 									]
 								}
 							},
@@ -131,7 +131,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/address",
+									"raw": "http://localhost:8081/api/clients/11/addresses",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -140,8 +140,8 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
-										"address"
+										"11",
+										"addresses"
 									]
 								}
 							},
@@ -154,7 +154,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"street\": \"ignacio zaragoza \",\r\n    \"state\": \" ixtapaluca\",\r\n    \"city\": \" state of mexico \",\r\n    \"cp\": 56585\r\n}",
+									"raw": "{\r\n    \"street\": \"ignacio zaragoza2 \",\r\n    \"state\": \" ixtapaluca2 \",\r\n    \"city\": \" state of mexico2 \",\r\n    \"cp\": 56585\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -162,7 +162,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/address",
+									"raw": "http://localhost:8081/api/clients/10/addresses",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -171,8 +171,8 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
-										"address"
+										"10",
+										"addresses"
 									]
 								}
 							},
@@ -185,7 +185,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"street\": \"ignacio zaragoza 2\",\r\n    \"state\": \"ixtapaluca 2\",\r\n    \"city\": \"state of mexico 2\",\r\n    \"cp\": 12345\r\n}",
+									"raw": "{\r\n    \"street\": \" ignacio zaragoza 5 \",\r\n    \"state\": \" ixtapaluca 5 \",\r\n    \"city\": \" state of mexico 5 \",\r\n    \"cp\": 12345\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -193,7 +193,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/address",
+									"raw": "http://localhost:8081/api/clients/10/addresses",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -202,8 +202,8 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
-										"address"
+										"10",
+										"addresses"
 									]
 								}
 							},
@@ -215,7 +215,7 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8081/api/clients/1/address",
+									"raw": "http://localhost:8081/api/clients/10/addresses",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -224,8 +224,8 @@
 									"path": [
 										"api",
 										"clients",
-										"1",
-										"address"
+										"10",
+										"addresses"
 									]
 								}
 							},
@@ -259,7 +259,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/api/clients/3",
+							"raw": "http://localhost:8081/api/clients/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -268,7 +268,7 @@
 							"path": [
 								"api",
 								"clients",
-								"3"
+								"10"
 							]
 						}
 					},
@@ -281,7 +281,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"celia\",\r\n    \"lastname\": \"bello\",\r\n    \"email\": \"celia.magb@gmail.com\",\r\n    \"phonenumber\": 5538977026\r\n}",
+							"raw": "{\r\n    \"name\": \" causa \",\r\n    \"lastname\": \" causa \",\r\n    \"email\": \"causa.gran@gmail.com\",\r\n    \"phonenumber\": 5538977026\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -325,21 +325,12 @@
 					"response": []
 				},
 				{
-					"name": "client",
+					"name": "clientsByName",
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"fer\",\r\n    \"lastname\": \"bello\",\r\n    \"email\": \"fer.magb\",\r\n    \"phonenumber\": 40\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8081/api/clients/3",
+							"raw": "http://localhost:8081/api/clients/name/jandro",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -348,7 +339,82 @@
 							"path": [
 								"api",
 								"clients",
-								"3"
+								"name",
+								"jandro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "client",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \" edgar4 \",\r\n    \"lastname\": \"campos4 \",\r\n    \"email\": \"edgar4.magb@gmail.com\",\r\n    \"phonenumber\": 1234567890\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/clients/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"clients",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clientsByLastname",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/clients/lastname/bello",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"clients",
+								"lastname",
+								"bello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clientsByPetName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/clients/pets/lia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"clients",
+								"pets",
+								"lia"
 							]
 						}
 					},
