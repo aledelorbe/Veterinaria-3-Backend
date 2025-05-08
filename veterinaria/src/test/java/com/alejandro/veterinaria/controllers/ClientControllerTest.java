@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -37,7 +38,7 @@ class ClientControllerTest {
     private MockMvc mockMvc;
  
     // To inject the dependency that represents the service to mock
-    @Autowired
+    @MockitoBean
     private ClientService service; 
 
     @Autowired
@@ -80,7 +81,7 @@ class ClientControllerTest {
         verify(service).findAll();
     } 
 
-    // To test the enpoint GetfindById with an existing id
+    // To test the endpoint GetfindById with an existing id
     @Test
     void getfindByIdExistingIdTest() throws Exception {
 
@@ -116,7 +117,7 @@ class ClientControllerTest {
         verify(service).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
     
-    // To test the enpoint GetfindById with an inexisting id
+    // To test the endpoint GetfindById with an inexisting id
     @Test
     void getfindByIdInexistingIdTest() throws Exception {
         
