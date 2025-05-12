@@ -3,12 +3,15 @@ package com.alejandro.veterinaria.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alejandro.veterinaria.entities.Address;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.repositories.ClientRepository;
 
+
+@Service
 public class AddressServiceImp implements AddressService {
     
     // To inject the repository dependency.

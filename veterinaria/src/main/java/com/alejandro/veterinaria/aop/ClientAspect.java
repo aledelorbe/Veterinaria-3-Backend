@@ -45,7 +45,6 @@ public class ClientAspect {
 
         clientBefore.setName(clientBefore.getName().trim());
         clientBefore.setLastname(clientBefore.getLastname().trim());
-        clientBefore.setEmail(clientBefore.getEmail().trim());
 
     }
 
