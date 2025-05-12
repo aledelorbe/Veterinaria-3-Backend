@@ -18,8 +18,9 @@ public class ExceptionController {
     public ResponseEntity<ErrorMessage> duplicate(Exception e) {
 
         // To know which entity fires the 'DataIntegrityViolationException'
+        // The first part of this condition is for Mysql and the other one is for H2
         String errorMessage;
-        if (e.getMessage().contains("client.UK_client")) {
+        if (e.getMessage().contains("client.UK_client") || e.getMessage().contains("PUBLIC.UK_CLIENT")) {
             // To know if this exception is fired by an update or create action.
             if (e.getMessage().contains("insert")) {
                 errorMessage = "Error! El cliente que se desea registrar ya se encuentra en la base de datos.";

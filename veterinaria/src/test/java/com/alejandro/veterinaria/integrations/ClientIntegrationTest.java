@@ -2,13 +2,15 @@ package com.alejandro.veterinaria.integrations;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
@@ -16,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import com.alejandro.veterinaria.entities.Client;
+import com.alejandro.veterinaria.entities.ErrorMessage;
 
 // To load/insert the data on the file 'insert.sql'  
 // To use the configurations on application-test.properties
@@ -222,6 +225,52 @@ class ClientIntegrationTest {
         assertEquals("Gonzalez", clients.get(1).getLastname());
         assertEquals("pastor34@idoidraw.com", clients.get(1).getEmail());
         assertEquals(1234567890L, clients.get(1).getPhonenumber());
+
+    }
+
+    // To test the validation in the DB: it doesn't allow to insert the same record
+    @Test
+    void clientPostDuplicateRecordsIntegrationTest() {
+    
+        // Given
+        Client clientToDuplicate = new Client(null, " Alejandro ", " Granados ", "enjambre@idoidraw.com", 5550374984L, null, null);
+
+        // When
+        ResponseEntity<ErrorMessage> response2 = client.postForEntity("/api/clients", clientToDuplicate, ErrorMessage.class);
+        ErrorMessage newError = response2.getBody();
+
+        // Then
+        assertEquals(HttpStatus.CONFLICT.value(), newError.getStatus());
+        assertEquals("Error! El cliente que se desea registrar ya se encuentra en la base de datos.", newError.getError());
+        assertTrue(newError.getMessage().contains("insert"));
+        assertTrue(newError.getMessage().contains("PUBLIC.UK_CLIENT"));
+
+        LocalDateTime ahora = LocalDateTime.now();
+        assertTrue( Duration.between(newError.getDateTime(), ahora).toMinutes() < 2 );
+
+    }
+
+    // To test the validation in the DB: it doesn't allow to update a record with the same information as another one
+    @Test
+    void clientPutDuplicateRecordsIntegrationTest() {
+    
+        // Given
+        Long idToUpdate = 51L;
+        Client clientToUpdate = new Client(null, " Celia ", " Bello ", "enjambre2@idoidraw.com", 5550374985L, null, null);
+        
+        // When
+        HttpEntity<Client> request = new HttpEntity<>(clientToUpdate);
+        ResponseEntity<ErrorMessage> response = client.exchange("/api/clients/" + idToUpdate, HttpMethod.PUT, request, ErrorMessage.class);
+        ErrorMessage newError = response.getBody();
+
+        // Then
+        assertEquals("Error! Este nombre de cliente al cual se desea actualizar ya lo posee otro cliente.", newError.getError());
+        assertEquals(HttpStatus.CONFLICT.value(), newError.getStatus());
+        assertTrue(newError.getMessage().contains("update"));
+        assertTrue(newError.getMessage().contains("PUBLIC.UK_CLIENT"));
+
+        LocalDateTime ahora = LocalDateTime.now();
+        assertTrue( Duration.between(newError.getDateTime(), ahora).toMinutes() < 2 );
 
     }
 
