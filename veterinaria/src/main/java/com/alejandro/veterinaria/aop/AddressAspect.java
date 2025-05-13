@@ -16,7 +16,7 @@ public class AddressAspect {
     private static final Logger logger = LoggerFactory.getLogger(AddressAspect.class);
 
     // To create advice that intercepts the method 'save' for the address entity
-    @Before("execution(* com.alejandro.veterinaria.services.ClientServiceImp.saveAddressByClientId(..))") 
+    @Before("execution(* com.alejandro.veterinaria.services.AddressServiceImp.saveAddressByClient(..))") 
     public void trimBefore(JoinPoint joinPoint) {
 
         logger.info("Aspect executing before the method save() ------------------------");
@@ -28,7 +28,7 @@ public class AddressAspect {
     }
 
     // To create advice that intercepts the method 'update' for the address entity
-    @Before("execution( * com.alejandro.veterinaria.services.ClientServiceImp.editAddressByClientId(..))")  
+    @Before("execution( * com.alejandro.veterinaria.services.AddressServiceImp.editAddressByClient(..))")  
     public void trimBeforeUpdate(JoinPoint joinPoint) {
 
         logger.info("Aspect executing before the method update() ------------------------");

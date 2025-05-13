@@ -69,7 +69,7 @@ class AddressControllerTest {
             .andExpect(jsonPath("$.city").value("cdmx"))
             .andExpect(jsonPath("$.cp").value(56512L))
             .andReturn()
-            ;
+        ;
 
         // Convert the response to an object
         String jsonString = result.getResponse().getContentAsString();
@@ -101,7 +101,7 @@ class AddressControllerTest {
         // Then
             .andExpect(status().isNoContent())
             .andExpect(content().string(""))
-            ;
+        ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
         verify(service).getAddressByClient(any(Client.class));
@@ -121,7 +121,7 @@ class AddressControllerTest {
         // Then
             .andExpect(status().isNotFound())
             .andExpect(content().string(""))
-            ;
+        ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
         verify(service, never()).getAddressByClient(any(Client.class));
@@ -247,8 +247,8 @@ class AddressControllerTest {
             .content(objectMapper.writeValueAsString(addressToUpdate)))
         
         // Then
-        .andExpect(status().isNotFound())
-        .andExpect(content().string(""))
+            .andExpect(status().isNotFound())
+            .andExpect(content().string(""))
         ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
@@ -308,7 +308,7 @@ class AddressControllerTest {
         // Then
             .andExpect(status().isNotFound())
             .andExpect(content().string(""))
-            ;
+        ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
         verify(service, never()).deleteAddressByClient(any(Client.class));
@@ -333,7 +333,7 @@ class AddressControllerTest {
             .andExpect(jsonPath("$.state").value("El campo state must not be blank"))
             .andExpect(jsonPath("$.city").value("El campo city must not be blank"))
             .andExpect(jsonPath("$.cp").value("El campo cp must not be null"))
-            ;
+        ;
 
         verify(service, never()).saveAddressByClient(any(Client.class), any(Address.class));
     }
