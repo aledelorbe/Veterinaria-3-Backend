@@ -243,7 +243,7 @@ class ClientIntegrationTest {
         assertEquals(HttpStatus.CONFLICT.value(), newError.getStatus());
         assertEquals("Error! El cliente que se desea registrar ya se encuentra en la base de datos.", newError.getError());
         assertTrue(newError.getMessage().contains("insert"));
-        assertTrue(newError.getMessage().contains("PUBLIC.UK_CLIENT"));
+        assertTrue(newError.getMessage().contains("PUBLIC.CLIENT"));
 
         LocalDateTime ahora = LocalDateTime.now();
         assertTrue( Duration.between(newError.getDateTime(), ahora).toMinutes() < 2 );
@@ -267,7 +267,7 @@ class ClientIntegrationTest {
         assertEquals("Error! Este nombre de cliente al cual se desea actualizar ya lo posee otro cliente.", newError.getError());
         assertEquals(HttpStatus.CONFLICT.value(), newError.getStatus());
         assertTrue(newError.getMessage().contains("update"));
-        assertTrue(newError.getMessage().contains("PUBLIC.UK_CLIENT"));
+        assertTrue(newError.getMessage().contains("PUBLIC.CLIENT"));
 
         LocalDateTime ahora = LocalDateTime.now();
         assertTrue( Duration.between(newError.getDateTime(), ahora).toMinutes() < 2 );

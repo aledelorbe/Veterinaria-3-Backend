@@ -16,7 +16,7 @@ public class PetAspect {
     private static final Logger logger = LoggerFactory.getLogger(PetAspect.class);
 
     // To create advice that intercepts the method 'save' for the pet entity
-    @Before("execution( * com.alejandro.veterinaria.services.ClientServiceImp.savePetByClientId(..))")  
+    @Before("execution( * com.alejandro.veterinaria.services.PetServiceImp.savePetByClient(..))")  
     public void trimBeforeSave(JoinPoint joinPoint) {
 
         logger.info("Aspect executing before the method save() ------------------------");
@@ -28,7 +28,7 @@ public class PetAspect {
     }
 
     // To create advice that intercepts the method 'update' for the pet entity
-    @Before("execution( * com.alejandro.veterinaria.services.ClientServiceImp.editPetByClientId(..))")  
+    @Before("execution( * com.alejandro.veterinaria.services.PetServiceImp.editPetByClient(..))")  
     public void trimBeforeUpdate(JoinPoint joinPoint) {
 
         logger.info("Aspect executing before the method update() ------------------------");

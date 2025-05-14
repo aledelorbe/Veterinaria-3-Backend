@@ -73,7 +73,7 @@ class PetControllerTest {
             .andExpect(jsonPath("$[0].age").value(4L))
             .andExpect(jsonPath("$[0].reasonForVisit").value("vomita mucho"))
             .andReturn()
-            ;
+        ;
 
         // Convert the response to an array of objects
         String jsonString = result.getResponse().getContentAsString();
@@ -307,12 +307,9 @@ class PetControllerTest {
         Long idPetToSearch = 30L;
         when(clientService.findById(anyLong())).thenReturn(Optional.empty());
         when(service.findById(anyLong())).thenReturn(Optional.of(PetData.createPet003()));
-        Pet petToUpdate = new Pet(null, "rayas 3", "gato 3", "rayado 3", 15L, "tiene mucho sueño x3");
         
         // When
-        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(petToUpdate)))
+        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch))
         
         // Then
             .andExpect(status().isNotFound())
@@ -333,12 +330,9 @@ class PetControllerTest {
         Long idPetToSearch = 999999L;
         when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient003()));
         when(service.findById(anyLong())).thenReturn(Optional.empty());
-        Pet petToUpdate = new Pet(null, "rayas 3", "gato 3", "rayado 3", 15L, "tiene mucho sueño x3");
         
         // When
-        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(petToUpdate)))
+        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch))
         
         // Then
             .andExpect(status().isNotFound())
@@ -359,13 +353,10 @@ class PetControllerTest {
         Long idPetToSearch = 30L;
         when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient003()));
         when(service.findById(anyLong())).thenReturn(Optional.of(PetData.createPet003()));
-        Pet petToUpdate = new Pet(null, "rayas 3", "gato 3", "rayado 3", 15L, "tiene mucho sueño x3");
         when(service.deletePetByClient(any(Client.class), anyLong())).thenReturn(Optional.empty());
 
         // When
-        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(petToUpdate)))
+        mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch))
         
         // Then
             .andExpect(status().isNotFound())
@@ -386,13 +377,10 @@ class PetControllerTest {
         Long idPetToSearch = 30L;
         when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient003()));
         when(service.findById(anyLong())).thenReturn(Optional.of(PetData.createPet003()));
-        Pet petToUpdate = new Pet(null, "rayas 3", "gato 3", "rayado 3", 15L, "tiene mucho sueño x3");
         when(service.deletePetByClient(any(Client.class), anyLong())).thenAnswer(invocation -> Optional.of(invocation.getArgument(0)) );
 
         // When
-        MvcResult result = mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(petToUpdate)))
+        MvcResult result = mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/pets/" + idPetToSearch))
         
         // Then
             .andExpect(status().isOk())
