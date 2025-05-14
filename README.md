@@ -18,38 +18,48 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 ## Características
 
-- **API REST** con rutas organizadas para interactuar con las actividades. Operaciones soportadas:
-  - **Client**:
-    - Obtener la lista de todos los clientes.
-    - Obtener la lista de todos los clientes cuya mascota tenga cierto nombre.
-    - Obtener la información de un cliente específico por su ID.
-    - Obtener la información de un cliente específico por su nombre.
-    - Obtener la información de un cliente específico por su apellido.
-    - Crear un nuevo cliente.
-    - Actualizar la información de un cliente existente.
-    - Eliminar un cliente por su ID.
-  - **Pet**:
-    - Obtener la lista de todas las mascotas pertenecientes a un cliente específico.
-    - Agregar una nueva mascota a un cliente específico.
-    - Actualizar la información de una mascota de un cliente específico.
-    - Eliminar la información de una mascota de un cliente específico.
-  - **Address**:
-    - Obtener la dirección perteneciente a un cliente específico.
-    - Agregar una dirección a un cliente específico.
-    - Actualizar la información de la dirección de un cliente específico.
-    - Eliminar la información de dirección de un cliente específico.
+### EndPoint's
+
+Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Operaciones soportadas:
+- **Client**:
+  - Obtener la lista de todos los clientes.
+  - Obtener la lista de todos los clientes cuya mascota tenga cierto nombre.
+  - Obtener la información de un cliente específico por su ID.
+  - Obtener la información de un cliente específico por su nombre.
+  - Obtener la información de un cliente específico por su apellido.
+  - Crear un nuevo cliente.
+  - Actualizar la información de un cliente existente.
+  - Eliminar un cliente por su ID.
+- **Pet**:
+  - Obtener la lista de todas las mascotas pertenecientes a un cliente específico.
+  - Agregar una nueva mascota a un cliente específico.
+  - Actualizar la información de una mascota de un cliente específico.
+  - Eliminar la información de una mascota de un cliente específico.
+- **Address**:
+  - Obtener la dirección perteneciente a un cliente específico.
+  - Agregar una dirección a un cliente específico.
+  - Actualizar la información de la dirección de un cliente específico.
+  - Eliminar la información de dirección de un cliente específico.
+ 
+### Programación Orientada a Aspectos (POA)
+
+- La clase `ClientAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar clientes en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **apellido** y **email**.
+- La clase `PetAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar mascotas en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **especie**, **raza** y **razón de visita**.
+- La clase `AddressAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar direcciones en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **calle**, **colonia** y **ciudad**.
+ 
+### Gestor de base de datos
+
 - Integración con MySQL para la manipulación de datos.
 - La base de datos SQL cuenta con tres tablas que gestionan la información de los clientes, mascotas y direcciones.
 - **Restricciones en la base de datos**:
   - No se permite que un mismo cliente se registre dos veces en la base de datos.
   - No se permite que se registre dos veces una misma mascota para un mismo cliente en la base de datos.
+
+### Validaciones y Excepciones
+
 - **Manejo de excepciones**:
   - Si se rompe la restricción para la entidad `Client` al intentar registrar dos veces a un mismo cliente, o si se rompe la restricción para la entidad `Pet` al intentar registrar dos veces una misma mascota para un mismo cliente, se dispara la excepción `DataIntegrityViolationException`. Esta excepción se maneja mediante dos clases que, en conjunto, permiten capturarla y generar un mensaje personalizado indicando cuál de las restricciones se ha roto.
-- **Implementación de Programación Orientada a Aspectos (POA)**:
-  - La clase `ClientAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar clientes en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **apellido** y **email**.
-  - La clase `PetAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar mascotas en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **especie**, **raza** y **razón de visita**.
-  - La clase `AddressAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar direcciones en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **calle**, **colonia** y **ciudad**.
-- **Validación de datos de entrada**:
+- **Validaciones de datos de entrada**:
   - `Client`:
     - No se permite que los atributos **nombre** y **apellido** se reciban vacíos o con solo espacios en blanco.
     - No se permite que el atributo **email** se reciba con un formato inválido.
@@ -59,6 +69,8 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
     - No se permite que el atributo **edad** se reciba vacío.
   - `Address`:
     - No se permite que los atributos **calle**, **colonia**, **ciudad** y **cp** se reciban vacíos o con solo espacios en blanco.
+   
+### Pratrones de diseño
 - Se emplea el patrón de diseño arquitectónico conocido como **MVC**, para separar en diferentes capas el código del proyecto.
 
 ## Estructura del proyecto
@@ -83,7 +95,7 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 ## Futuras mejoras
 
 - Realizar pruebas unitarias de la capa de repositorio.
-Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
+- Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
 - Despligue en AWS.
 
 ## Demo
@@ -94,92 +106,109 @@ Puedes ver una demo del proyecto en el siguiente enlace: [Veterinaria](Veterinar
 
 # Veterinary Clinic (Backend)
 
-This project consists of the development of a backend system to manage information related to a veterinary clinic. It uses the **Spring Boot** framework and is designed to provide a REST API to manage clients, their pets, and associated addresses.
+This project involves the development of a backend system to manage information related to a veterinary clinic. It uses the **Spring Boot** framework and is designed to provide a REST API for handling clients, their pets, and associated addresses.
 
 ## Technologies Used
 
-- **Java**: Main programming language. Specifically, `JDK 17` was used for this project.
+- **Java**: Main programming language. This project specifically uses `JDK 17`.
 - **Spring Boot**: Framework for building Java applications. This project uses version `3.4.0`.
   - **Hibernate/JPA**: For managing the relational database.
-  - **Jakarta Validation**: For validating input data.
+  - **Jakarta Validation**: For input data validation.
   - **Exception Handling**.
   - **Aspect-Oriented Programming (AOP)**.
-- **Maven**: For dependency management and project build.
-- **MySQL**: Relational database management system to store data about clients, pets, and addresses.
-- **Postman**: Used to simulate a client making requests to the server and testing the endpoints.
-- **JUnit**: Unit testing framework used to verify the correct functionality of methods.
-- **Mockito**: Mocking framework used to simulate dependencies and enable isolated unit testing.
+- **Maven**: For dependency management and project building.
+- **MySQL**: Relational database management system used to store information about clients, pets, and addresses.
+- **Postman**: Used to simulate a client making requests to the server and to test the endpoints.
+- **JUnit**: Unit testing framework used to verify the correct functioning of methods.
+- **Mockito**: Mocking framework used to simulate dependencies and facilitate isolated unit testing.
 
 ## Features
 
-- **REST API** with organized routes to interact with veterinary-related activities. Supported operations:
-  - **Client**:
-    - Retrieve the list of all clients.
-    - Retrieve the list of all clients whose pet has a certain name.
-    - Retrieve information about a specific client by ID.
-    - Retrieve information about a specific client by first name.
-    - Retrieve information about a specific client by last name.
-    - Create a new client.
-    - Update an existing client.
-    - Delete a client by ID.
-  - **Pet**:
-    - Retrieve the list of all pets belonging to a specific client.
-    - Add a new pet to a specific client.
-    - Update the information of a pet for a specific client.
-    - Delete a pet from a specific client.
-  - **Address**:
-    - Retrieve the address of a specific client.
-    - Add an address to a specific client.
-    - Update the address of a specific client.
-    - Delete the address of a specific client.
+### Endpoints
+
+Organized routes to interact with clients, pets, and addresses. Supported operations:
+
+- **Client**:
+  - Get a list of all clients.
+  - Get a list of all clients whose pet has a specific name.
+  - Get information of a specific client by ID.
+  - Get information of a specific client by name.
+  - Get information of a specific client by last name.
+  - Create a new client.
+  - Update an existing client's information.
+  - Delete a client by ID.
+
+- **Pet**:
+  - Get the list of all pets belonging to a specific client.
+  - Add a new pet to a specific client.
+  - Update a pet's information for a specific client.
+  - Delete a pet's information for a specific client.
+
+- **Address**:
+  - Get the address belonging to a specific client.
+  - Add an address to a specific client.
+  - Update a client's address information.
+  - Delete a client's address information.
+
+### Aspect-Oriented Programming (AOP)
+
+- The `ClientAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating clients in the database. Its purpose is to trim leading and trailing whitespace from the **name**, **last name**, and **email** attributes.
+- The `PetAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating pets in the database. Its purpose is to trim whitespace from **name**, **species**, **breed**, and **reason for visit**.
+- The `AddressAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating addresses in the database. Its purpose is to trim whitespace from **street**, **neighborhood**, and **city** attributes.
+
+### Database Management
+
 - Integration with MySQL for data manipulation.
-- The SQL database includes three tables managing information about clients, pets, and addresses.
-- **Database constraints**:
+- The SQL database has three tables to manage information on clients, pets, and addresses.
+- **Database Constraints**:
   - A client cannot be registered more than once.
   - A pet cannot be registered more than once for the same client.
-- **Exception handling**:
-  - If a constraint is violated when trying to register a duplicate `Client` or `Pet`, a `DataIntegrityViolationException` is thrown. This exception is handled using two classes that capture it and generate a custom message indicating which constraint was broken.
-- **Aspect-Oriented Programming (AOP) implementation**:
-  - The `ClientAspect` class contains methods that intercept the execution of client creation and update methods to trim whitespace from the **first name**, **last name**, and **email** attributes.
-  - The `PetAspect` class contains methods that intercept the execution of pet creation and update methods to trim whitespace from the **name**, **species**, **breed**, and **reason for visit** attributes.
-  - The `AddressAspect` class contains methods that intercept the execution of address creation and update methods to trim whitespace from the **street**, **neighborhood**, and **city** attributes.
-- **Input validation**:
+
+### Validations and Exceptions
+
+- **Exception Handling**:
+  - If the `Client` entity constraint is violated by trying to register the same client twice, or if the `Pet` entity constraint is violated by registering the same pet twice for the same client, a `DataIntegrityViolationException` is thrown. This exception is handled by two classes that work together to capture it and generate a custom message indicating which constraint was violated.
+
+- **Input Data Validation**:
   - `Client`:
-    - **First name** and **last name** cannot be empty or contain only whitespace.
-    - **Email** must be in a valid format.
-    - **Phone number** must be exactly 10 digits long.
+    - **Name** and **last name** cannot be empty or contain only whitespace.
+    - **Email** must have a valid format.
+    - **Phone number** must be exactly 10 digits.
   - `Pet`:
     - **Name**, **species**, and **reason for visit** cannot be empty or contain only whitespace.
     - **Age** must not be empty.
   - `Address`:
-    - **Street**, **neighborhood**, **city**, and **postal code** cannot be empty or contain only whitespace.
-- The project follows the **MVC architectural design pattern**, separating the code into different layers.
+    - **Street**, **neighborhood**, **city**, and **postal code** must not be empty or contain only whitespace.
+
+### Design Patterns
+
+- The **MVC** architectural design pattern is used to separate the project code into different layers.
 
 ## Project Structure
 
 ### Application Source Code
 
-- `aop/`: Contains the classes that implement aspect-oriented logic.
-- `controllers/`: Contains the classes that handle HTTP requests and define the API endpoints.
-- `services/`: Contains the classes with the business logic.
-- `repositories/`: Contains interfaces that extend from repository interfaces for data handling.
-- `entities/`: Contains the classes that map to the database tables.
-- `utils/`: Contains utility classes with methods that can be used across the application.
+- `aop/`: Contains classes handling logic related to aspect-oriented programming.
+- `controllers/`: Contains classes handling HTTP requests and defining the API endpoints.
+- `services/`: Contains classes with business logic.
+- `repositories/`: Contains interfaces that extend a data access interface.
+- `entities/`: Contains classes mapped to their respective database tables.
+- `utils/`: Contains utility classes with reusable methods across the application.
 
 ### Test Code
 
-- `controllers/`: Contains test classes that validate the behavior of the controller methods.
-- `services/`: Contains test classes that verify the functionality of service methods.
-- `data/`: Contains mock data classes used during test execution.
-- `integrations/`: Contains integration test classes that validate the full behavior of the controllers.
-- `resources/`: Stores SQL data used during integration tests, and configuration properties for an in-memory H2 database used specifically during these tests.
+- `controllers/`: Contains test classes that validate controller method behaviors.
+- `services/`: Includes test classes for verifying service method functionality.
+- `data/`: Stores mock data classes used during testing.
+- `integrations/`: Contains test classes that validate the full behavior of controllers (integration tests).
+- `resources/`: Stores SQL data used as input for integration tests and contains configuration properties for an in-memory H2 database used during testing.
 
 ## Future Improvements
 
-- Write unit tests for the repository layer.
+- Implement unit tests for the repository layer.
 - Once the unit test described in the previous step has been implemented, release a new version of the project indicating that it includes services, unit tests, and integration tests.
-- Deploy the project on AWS.
+- Deploy to AWS.
 
 ## Demo
 
-You can view a demo of the project at the following link: [Veterinaria](Veterinaria).
+You can see a demo of the project at the following link: [Veterinary Clinic](Veterinaria).
