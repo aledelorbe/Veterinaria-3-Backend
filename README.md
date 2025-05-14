@@ -82,7 +82,8 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 
 ## Futuras mejoras
 
-- Realizar pruebas unitarias de la capa de repositorios.
+- Realizar pruebas unitarias de la capa de repositorio.
+Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
 - Despligue en AWS.
 
 ## Demo
@@ -176,6 +177,7 @@ This project consists of the development of a backend system to manage informati
 ## Future Improvements
 
 - Write unit tests for the repository layer.
+- Once the unit test described in the previous step has been implemented, release a new version of the project indicating that it includes services, unit tests, and integration tests.
 - Deploy the project on AWS.
 
 ## Demo
