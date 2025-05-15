@@ -70,7 +70,7 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
   - `Address`:
     - No se permite que los atributos **calle**, **colonia**, **ciudad** y **cp** se reciban vacíos o con solo espacios en blanco.
    
-### Pratrones de diseño
+### Patrones de diseño
 - Se emplea el patrón de diseño arquitectónico conocido como **MVC**, para separar en diferentes capas el código del proyecto.
 
 ## Estructura del proyecto
