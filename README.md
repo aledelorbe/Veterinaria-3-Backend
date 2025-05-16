@@ -94,6 +94,7 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
 
 ## Futuras mejoras
 
+- Cambiar el nombre de la variable y columna phoneNumber
 - Actuazliar el clientSave y clientDelete.
 - Realizar pruebas unitarias de la capa de repositorio.
 - Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
