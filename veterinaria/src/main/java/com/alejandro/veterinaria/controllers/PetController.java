@@ -109,7 +109,7 @@ public class PetController {
 
         // if the client is present then it means that the object could be deleted
         if ( optionalUpdateClient.isPresent() ) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(optionalUpdateClient.get());
+            return ResponseEntity.status(HttpStatus.OK).body(optionalUpdateClient.get());
         }
 
         // Else, return an empty optional
