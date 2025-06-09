@@ -1,6 +1,5 @@
 package com.alejandro.veterinaria.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.alejandro.veterinaria.entities.Client;
@@ -17,12 +16,10 @@ public interface PetService {
 
     public Optional<Pet> findById(Long id);
     
-    public List<Pet> getPetsByClient(Client clientDb);
-
-    public Client savePetByClient(Client clientDb, Pet newPet);
+    public Optional<Client> savePetByClient(Long clientId, Pet newPet);
     
-    public Optional<Client> editPetByClient(Client clientDb, Long petId, Pet editPet);
+    public Optional<Client> editPetByClient(Long clientId, Long petId, Pet editPet);
     
-    public Optional<Client> deletePetByClient(Client clientDb, Long petId);
+    public Optional<Client> deletePetByClient(Long clientId, Long petId);
 
 }

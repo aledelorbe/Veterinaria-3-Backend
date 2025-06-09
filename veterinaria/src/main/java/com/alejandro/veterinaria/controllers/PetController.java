@@ -42,17 +42,18 @@ public class PetController {
     // Methods for pet entity
     // -----------------------------
 
-    // To create an endpoint that allows invoking the method 'getPetsByClientId'.
+    // To create an endpoint that allows getting all of the pets of a specif client
     @GetMapping("/{id_client}/pets")
     public ResponseEntity<?> getPetsByClient(@PathVariable Long id_client) {
-        // Search for a specific client and if it's present then return it.
+        // Search for a specific client
         Optional<Client> optionalClient = clientService.findById(id_client);
 
+        // if the client is present then return the pet array.
         if (optionalClient.isPresent()) {
-            return ResponseEntity.ok(service.getPetsByClient(optionalClient.get()));
+            return ResponseEntity.ok(optionalClient.get().getPets());
         }
 
-        // Else returns code response 404
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
 
@@ -65,15 +66,15 @@ public class PetController {
             return utilValidation.validation(result);
         }
 
-        // Search for a specific client if it exists then save the pet
-        Optional<Client> optionalClient = clientService.findById(clientId);
+        // Call the method 'savePetByClient'
+        Optional<Client> optionalNewClient = service.savePetByClient(clientId, newPet);
 
-        if (optionalClient.isPresent()) {
-            Client newClient = service.savePetByClient(optionalClient.get(), newPet);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+        // if the client is present then it means that the object could be saved
+        if (optionalNewClient.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalNewClient.get());
         }
 
-        // Else returns code response 404
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
 
@@ -87,25 +88,15 @@ public class PetController {
             return utilValidation.validation(result);
         }
 
-        // Search for a specific client and specific pet and if they are present then
-        // edit the information about pet
-        Optional<Client> optionalClient = clientService.findById(clientId);
-        Optional<Pet> optionalPet = service.findById(petId);
+        // Call the method 'editPetByClient'
+        Optional<Client> optionalUpdateClient = service.editPetByClient(clientId, petId, editPet);
 
-        if ( optionalClient.isPresent() && optionalPet.isPresent() ) {
-            Optional<Client> optionalUpdateClient = service.editPetByClient(optionalClient.get(), petId, editPet);
-
-            // If the 'Optional Client Update' object is present, the pet was updated.
-            if (optionalUpdateClient.isPresent()) {
-                Client updateClient = optionalUpdateClient.get();
-                return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
-            } else {
-                // Else returns code response 404
-                return ResponseEntity.notFound().build();
-            }
+        // if the client is present then it means that the object could be updated
+        if ( optionalUpdateClient.isPresent() ) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalUpdateClient.get());
         }
 
-        // Else returns code response 404
+        // Else, return a 404 status code.
         return ResponseEntity.notFound().build();
     }
 
@@ -113,26 +104,15 @@ public class PetController {
     @DeleteMapping("/{clientId}/pets/{petId}")
     public ResponseEntity<?> deletePetByClient(@PathVariable Long clientId, @PathVariable Long petId) {
 
-        // Search for a specific client and specific pet and if they are present then
-        // delete a pet
-        Optional<Client> optionalClient = clientService.findById(clientId);
-        Optional<Pet> optionalPet = service.findById(petId);
+        // Call the method 'deletePetByClient'
+        Optional<Client> optionalUpdateClient = service.deletePetByClient(clientId, petId);
 
-        if (optionalClient.isPresent() && optionalPet.isPresent()) {
-            Optional<Client> optionalUpdateClient = service.deletePetByClient(optionalClient.get(), petId);
-
-            // If the 'Optional Client Update' object is present, the pet was deleted.
-            if (optionalUpdateClient.isPresent()) {
-                Client updateClient = optionalUpdateClient.get();
-
-                return ResponseEntity.ok(updateClient);
-            } else {
-                // Else returns code response 404
-                return ResponseEntity.notFound().build();
-            }
+        // if the client is present then it means that the object could be deleted
+        if ( optionalUpdateClient.isPresent() ) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalUpdateClient.get());
         }
 
-        // Else returns code response 404
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
 

@@ -21,6 +21,7 @@ Este proyecto consiste en el desarrollo de un backend para gestionar informació
 ### EndPoint's
 
 Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Operaciones soportadas:
+
 - **Client**:
   - Obtener la lista de todos los clientes.
   - Obtener la lista de todos los clientes cuya mascota tenga cierto nombre.
@@ -40,13 +41,13 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
   - Agregar una dirección a un cliente específico.
   - Actualizar la información de la dirección de un cliente específico.
   - Eliminar la información de dirección de un cliente específico.
- 
+
 ### Programación Orientada a Aspectos (POA)
 
 - La clase `ClientAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar clientes en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **apellido** y **email**.
 - La clase `PetAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar mascotas en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **nombre**, **especie**, **raza** y **razón de visita**.
 - La clase `AddressAspect` incluye métodos que interceptan, antes de su ejecución, a los métodos encargados de guardar y actualizar direcciones en la base de datos. Su objetivo es eliminar los espacios en blanco al inicio y al final de los atributos **calle**, **colonia** y **ciudad**.
- 
+
 ### Gestor de base de datos
 
 - Integración con MySQL para la manipulación de datos.
