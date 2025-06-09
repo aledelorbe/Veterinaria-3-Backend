@@ -52,6 +52,7 @@ public class Client {
     @Min(value = 1000000000, message = "{Min.client.phonenumber}")
     @Max(value = 9999999999L, message = "{Max.client.phonenumber}")
     @NotNull // To obligate to this attribute not to empty
+    @Column(name = "phone_number")
     private Long phonenumber;
 
     // To set a relationship one to many

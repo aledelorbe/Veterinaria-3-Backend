@@ -7,7 +7,7 @@ INSERT INTO address (id_address, street, state, city, cp) VALUES
 (2001, 'av. siempre viva', 'venustiano carranza', 'cdmx', 56512),
 (3001, 'calle false 123', 'iztapalapa', 'cdmx', 12585),
 (4001, 'candelaria', 'gustavo madero', 'cdmx', 56546);
-INSERT INTO client (id_client, name, lastname, email, phonenumber, id_address) VALUES
+INSERT INTO client (id_client, name, lastname, email, phone_number, id_address) VALUES
 (61, 'Alejandro', 'Granados', 'alejandro.magb@gmail.com', 1538977020, 1001),
 (21, 'Hueto', 'Navejas', 'hekevim148@idoidraw.com', 1538971230, 2001),
 (31, 'Celia', 'Bello', 'cazador19@idoidraw.com', 1234977026, 3001),

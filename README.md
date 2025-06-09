@@ -69,8 +69,9 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
     - No se permite que el atributo **edad** se reciba vacío.
   - `Address`:
     - No se permite que los atributos **calle**, **colonia**, **ciudad** y **cp** se reciban vacíos o con solo espacios en blanco.
-   
+  
 ### Patrones de diseño
+
 - Se emplea el patrón de diseño arquitectónico conocido como **MVC**, para separar en diferentes capas el código del proyecto.
 
 ## Estructura del proyecto
@@ -94,7 +95,6 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
 
 ## Futuras mejoras
 
-- Cambiar el nombre de la variable y columna phoneNumber
 - Actuazliar el clientSave y clientDelete.
 - Realizar pruebas unitarias de la capa de repositorio.
 - Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
