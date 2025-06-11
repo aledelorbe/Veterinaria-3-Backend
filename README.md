@@ -98,8 +98,8 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
 
 - Actuazliar el clientSave y clientDelete.
 - Realizar pruebas unitarias de la capa de repositorio.
-- Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
 - Agregar una tabla llamada `Historial de precios` para registrar las anteriores veces en las que ha venido el paciente.
+- Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
 - Despligue en AWS.
 
 ## Demo
