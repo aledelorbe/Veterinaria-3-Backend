@@ -96,10 +96,12 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
 
 ## Futuras mejoras
 
-- Actuazliar el clientSave y clientDelete.
 - Realizar pruebas unitarias de la capa de repositorio.
-- Agregar una tabla llamada `Historial de precios` para registrar las anteriores veces en las que ha venido el paciente.
-- Una vez implementada la prueba unitaria descrita en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
+- Agregar un endpoint qué agregue un nuevo cliente y un nuevo arreglo de mascotas al mismo tiempo.
+- Agregar una tabla llamada `Historial clinico` para registrar las veces en las que ha venido el paciente. Esta tabla contendra los atributos: `reason for visit`, `date` y `diagnostico`.
+- Una vez implementada lo descrito en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
+- Dividir la aplicación en dos microservicios: datos del cliente y datos de mascotas.
+- Dockerizar.
 - Despligue en AWS.
 
 ## Demo

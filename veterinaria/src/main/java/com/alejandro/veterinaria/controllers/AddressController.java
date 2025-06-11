@@ -42,26 +42,18 @@ public class AddressController {
     // Methods for address entity
     // -----------------------------
 
-    // To create an endpoint that allows invoking the method 'getAddressByClient'.
+    // To create an endpoint that allows invoking the 'getAddressByClient' method.
     @GetMapping("/{id_client}/addresses")
     public ResponseEntity<?> getAddressByClient(@PathVariable Long id_client) {
-        // Search for a specific client and if it's present then return it.
+        // Search for a specific client
         Optional<Client> optionalClient = clientService.findById(id_client);
 
+        // if the client is present then return the pet array.
         if (optionalClient.isPresent()) {
-
-            Optional<Address> optionalAddress = service.getAddressByClient(optionalClient.get());
-
-            // If the address is present the return it.
-            if (optionalAddress.isPresent()) {
-                return ResponseEntity.ok(optionalAddress.get());
-            }
-
-            // Else returns code response 204 and a void body
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(optionalClient.get().getAddress());
         }
 
-        // Else returns code response 404
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
 
@@ -73,14 +65,15 @@ public class AddressController {
             return utilValidation.validation(result);
         }
 
-        // Search for a specific client if it exists then save the address
-        Optional<Client> optionalClient = clientService.findById(clientId);
+        // Call the 'savePetByClient' method
+        Optional<Client> optionalNewClient = service.saveAddressByClient(clientId, newAddress);
 
-        if (optionalClient.isPresent()) {
-            Client newClient = service.saveAddressByClient(optionalClient.get(), newAddress);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+        // if the client is present then it means that the object could be saved
+        if (optionalNewClient.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalNewClient.get());
         }
-        // Else returns code response 404
+
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
     
@@ -93,14 +86,15 @@ public class AddressController {
             return utilValidation.validation(result);
         }
 
-        // Search for a specific client if it is present then edit the information about address
-        Optional<Client> optionalClient = clientService.findById(clientId);
+        // Call the 'editPetByClient' method
+        Optional<Client> optionalUpdateClient = service.editAddressByClient(clientId, editAddress);
 
-        if (optionalClient.isPresent()) {
-            Client updateClient = service.editAddressByClient(optionalClient.get(), editAddress);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updateClient);
+        // if the client is present then it means that the object could be updated
+        if ( optionalUpdateClient.isPresent() ) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(optionalUpdateClient.get());
         }
-        // Else returns code response 404
+
+        // Else, return a 404 status code.
         return ResponseEntity.notFound().build();
     }
 
@@ -108,14 +102,15 @@ public class AddressController {
     @DeleteMapping("/{clientId}/addresses")
     public ResponseEntity<?> deleteAddressByClientId(@PathVariable Long clientId) {
 
-        // Search for a specific client if it is present then delete a address
-        Optional<Client> optionalClient = clientService.findById(clientId);
+        // Call the 'deletePetByClient' method
+        Optional<Client> optionalUpdateClient = service.deleteAddressByClient(clientId);
 
-        if (optionalClient.isPresent()) {
-            Client updateClient = service.deleteAddressByClient(optionalClient.get());
-            return ResponseEntity.ok(updateClient);
+        // if the client is present then it means that the object could be deleted
+        if ( optionalUpdateClient.isPresent() ) {
+            return ResponseEntity.status(HttpStatus.OK).body(optionalUpdateClient.get());
         }
-        // Else returns code response 404
+
+        // Else, return an empty optional
         return ResponseEntity.notFound().build();
     }
 

@@ -48,9 +48,11 @@ public class ClientController {
     public ResponseEntity<?> client(@PathVariable Long id) {
         // Search for a specific client and if it's present then return it.
         Optional<Client> optionalClient = service.findById(id);
+
         if (optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
+        
         // Else returns code response 404
         return ResponseEntity.notFound().build();
     }
@@ -85,6 +87,7 @@ public class ClientController {
         if (optionalClient.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(optionalClient.orElseThrow());
         }
+
         // Else return code response 404
         return ResponseEntity.notFound().build();
     }
@@ -94,9 +97,11 @@ public class ClientController {
     public ResponseEntity<?> deleteClient(@PathVariable Long id) {
         // Find specific client and if it's present then return specific client
         Optional<Client> optionalClient = service.deleteById(id);
+
         if (optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.orElseThrow());
         }
+        
         // Else return code response 404
         return ResponseEntity.notFound().build();
     }

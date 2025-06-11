@@ -66,7 +66,7 @@ public class PetController {
             return utilValidation.validation(result);
         }
 
-        // Call the method 'savePetByClient'
+        // Call the 'savePetByClient' method
         Optional<Client> optionalNewClient = service.savePetByClient(clientId, newPet);
 
         // if the client is present then it means that the object could be saved
@@ -88,7 +88,7 @@ public class PetController {
             return utilValidation.validation(result);
         }
 
-        // Call the method 'editPetByClient'
+        // Call the 'editPetByClient' method
         Optional<Client> optionalUpdateClient = service.editPetByClient(clientId, petId, editPet);
 
         // if the client is present then it means that the object could be updated
@@ -104,7 +104,7 @@ public class PetController {
     @DeleteMapping("/{clientId}/pets/{petId}")
     public ResponseEntity<?> deletePetByClient(@PathVariable Long clientId, @PathVariable Long petId) {
 
-        // Call the method 'deletePetByClient'
+        // Call the 'deletePetByClient' method
         Optional<Client> optionalUpdateClient = service.deletePetByClient(clientId, petId);
 
         // if the client is present then it means that the object could be deleted

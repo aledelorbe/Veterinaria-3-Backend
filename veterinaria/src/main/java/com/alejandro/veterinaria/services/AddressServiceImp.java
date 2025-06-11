@@ -22,47 +22,93 @@ public class AddressServiceImp implements AddressService {
     // Methods for address entity
     // -----------------------------
 
-    // To get the address of certain client
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Address> getAddressByClient(Client clientDb) {
-        return Optional.ofNullable(clientDb.getAddress());
-    }
-
     // To save a new address of a certain client in the db
     @Override
     @Transactional
-    public Client saveAddressByClient(Client clientDb, Address newAddress) {
+    public Optional<Client> saveAddressByClient(Long clientId, Address newAddress) {
 
-        clientDb.setAddress(newAddress);
+        // Search for a specific client
+        Optional<Client> optionalClient = clientRepository.findById(clientId);
 
-        return clientRepository.save(clientDb);
+        // if it exists then save the address and return the new data (new client)
+        if ( optionalClient.isPresent() ) {
+            Client clientDb = optionalClient.get();
+
+            clientDb.setAddress(newAddress);
+    
+            return Optional.of(clientRepository.save(clientDb));
+        }
+
+        // Else, return an empty optional
+        return optionalClient;
     }
 
     // To update the information about the address
     @Override
     @Transactional
-    public Client editAddressByClient(Client clientDb, Address editAddress) {
+    public Optional<Client> editAddressByClient(Long clientId, Address editAddress) {
 
-        Address addressDb = clientDb.getAddress();
+        // Search for a specific client
+        Optional<Client> optionalClient = clientRepository.findById(clientId);
 
-        // update all of object attributes
-        addressDb.setStreet(editAddress.getStreet());
-        addressDb.setState(editAddress.getState());
-        addressDb.setCity(editAddress.getCity());
-        addressDb.setCp(editAddress.getCp());
+        // If the client is present then ...
+        if ( optionalClient.isPresent() ) {
+        
+            Client clientDb = optionalClient.get();
 
-        return clientRepository.save(clientDb);
+            // If the client has an address then...
+            if ( clientDb.getAddress() != null ) {
+                
+                // Edit the address belongs to this client.
+                Address addressDb = clientDb.getAddress();
+        
+                // update all of object attributes
+                addressDb.setStreet(editAddress.getStreet());
+                addressDb.setState(editAddress.getState());
+                addressDb.setCity(editAddress.getCity());
+                addressDb.setCp(editAddress.getCp());
+        
+                // and save the information in the db
+                return Optional.of(clientRepository.save(clientDb));
+            }
+
+            // Else, return an empty optional
+            return Optional.empty();
+        }
+        
+        // Else, return an empty optional
+        return Optional.empty();
     }
 
     // To delete a certain address in the db
     @Override
     @Transactional
-    public Client deleteAddressByClient(Client clientDb) {
+    public Optional<Client> deleteAddressByClient(Long clientId) {
 
-        clientDb.setAddress(null);
+        // Search for a specific client
+        Optional<Client> optionalClient = clientRepository.findById(clientId);
 
-        return clientRepository.save(clientDb);
+        // If the client is present then ...
+        if ( optionalClient.isPresent() ) {
+        
+            Client clientDb = optionalClient.get();
+        
+            // If the client has an address then...
+            if ( clientDb.getAddress() != null ) {
+
+                // Delete the address
+                clientDb.setAddress(null);
+        
+                // and save the information in the db
+                return Optional.of(clientRepository.save(clientDb));
+            }
+
+            // Else, return an empty optional
+            return Optional.empty();
+        }
+
+        // Else, return an empty optional
+        return Optional.empty();
     }
 
 }
