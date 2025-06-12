@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.alejandro.veterinaria.TestConfig;
-import com.alejandro.veterinaria.data.AddressData;
 import com.alejandro.veterinaria.data.ClientData;
 import com.alejandro.veterinaria.data.CustomCondition;
 import com.alejandro.veterinaria.entities.Address;
@@ -48,14 +47,13 @@ class AddressControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // To test the endpoint getAddressByClient with an existing idClient and the client has an address
+    // To test the 'getAddressByClient' endpoint when the client has an address
     @Test
     void getAddressByClientExistingIdTest() throws Exception {
 
         // Given
         Long idClientToSearch = 2L;
         when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient002()));
-        when(service.getAddressByClient(any(Client.class))).thenReturn(Optional.of(AddressData.createAddress002()));
 
         // When
         MvcResult result = mockMvc.perform(get("/api/clients/" + idClientToSearch + "/addresses"))
@@ -83,31 +81,28 @@ class AddressControllerTest {
         assertEquals(56512L, address.getCp());
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
-        verify(service).getAddressByClient(any(Client.class));
     }
 
-    // To test the endpoint getAddressByClient with an existing idClient but the client does not have an address
+    // To test the 'getAddressByClient' endpoint when the client does not have an address
     @Test
     void getAddressByClientExistingIdNoAddressTest() throws Exception {
 
         // Given
-        Long idClientToSearch = 2L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient002()));
-        when(service.getAddressByClient(any(Client.class))).thenReturn(Optional.empty());
+        Long idClientToSearch = 5L;
+        when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient005()));
 
         // When
         mockMvc.perform(get("/api/clients/" + idClientToSearch + "/addresses"))
 
         // Then
-            .andExpect(status().isNoContent())
+            .andExpect(status().isOk())
             .andExpect(content().string(""))
         ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
-        verify(service).getAddressByClient(any(Client.class));
     }
     
-    // To test the endpoint getAddressByClient with an inexisting id
+    // To test the 'getAddressByClient' endpoint when the client does not exist
     @Test
     void getAddressByClientInexistingIdTest() throws Exception {
         
@@ -124,17 +119,15 @@ class AddressControllerTest {
         ;
 
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
-        verify(service, never()).getAddressByClient(any(Client.class));
     }
 
-    // To test the endpoint saveNewAddressByClientId when the idClient exists
+    // To test the 'saveNewAddressByClientId' endpoint when the address can be saved
     @Test
-    void postSaveNewAddressByClientIdExistingIdTest() throws Exception {
+    void postSaveNewAddressByClientIdSuccessSaveTest() throws Exception {
 
         // Given
         Long idClientToSearch = 5L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient005()));
-        when(service.saveAddressByClient(any(Client.class), any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(service.saveAddressByClient(anyLong(), any(Address.class))).thenReturn(Optional.of(ClientData.createClient004()));
         Address addressToInsert = new Address(null, "independencia", "huchapan", "hidalgo", 45555L);
         
         // When
@@ -145,11 +138,11 @@ class AddressControllerTest {
         // Then
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$").isNotEmpty())
-            .andExpect(jsonPath("$.id").value(5L))
-            .andExpect(jsonPath("$.name").value("John"))
-            .andExpect(jsonPath("$.lastname").value("Lennon"))
-            .andExpect(jsonPath("$.email").value("lennon@idoidraw.com"))
-            .andExpect(jsonPath("$.phonenumber").value(45208954L))
+            .andExpect(jsonPath("$.id").value(4L))
+            .andExpect(jsonPath("$.name").value("Esteban"))
+            .andExpect(jsonPath("$.lastname").value("Gonzalez"))
+            .andExpect(jsonPath("$.email").value("pastor34@idoidraw.com"))
+            .andExpect(jsonPath("$.phonenumber").value(1234567890L))
             .andReturn()
         ;
 
@@ -158,23 +151,22 @@ class AddressControllerTest {
         Client client = objectMapper.readValue(jsonString, Client.class);
 
         assertNotNull(client);
-        assertEquals(5L, client.getId());
-        assertEquals("John", client.getName());
-        assertEquals("Lennon", client.getLastname());
-        assertEquals("lennon@idoidraw.com", client.getEmail());
-        assertEquals(45208954L, client.getPhonenumber());
+        assertEquals(4L, client.getId());
+        assertEquals("Esteban", client.getName());
+        assertEquals("Gonzalez", client.getLastname());
+        assertEquals("pastor34@idoidraw.com", client.getEmail());
+        assertEquals(1234567890L, client.getPhonenumber());
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
-        verify(service).saveAddressByClient(any(Client.class), any(Address.class));
+        verify(service).saveAddressByClient(argThat(new CustomCondition(ClientData.idsValid, true)), any(Address.class));
     }
 
-    // To test the endpoint saveNewAddressByClientId when the idClient doesnt exist
+    // To test the 'saveNewAddressByClientId' endpoint when the address can not be saved
     @Test
-    void postSaveNewAddressByClientIdInexistingIdTest() throws Exception {
+    void postSaveNewAddressByClientIdUnsuccessSaveTest() throws Exception {
 
         // Given
         Long idClientToSearch = 999999L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.empty());
+        when(service.saveAddressByClient(anyLong(), any(Address.class))).thenReturn(Optional.empty());
         Address addressToInsert = new Address(null, "independencia", "huchapan", "hidalgo", 45555L);
         
         // When
@@ -187,18 +179,16 @@ class AddressControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
-        verify(service, never()).saveAddressByClient(any(Client.class), any(Address.class));
+        verify(service).saveAddressByClient(argThat(new CustomCondition(ClientData.idsValid, false)), any(Address.class));
     }
 
-    // To test the endpoint editAddressByClientId when the idClient exists
+    // To test the 'editAddressByClientId' endpoint when the address can be updated
     @Test
-    void putEditAddressByClientIdExistingIdTest() throws Exception {
+    void putEditAddressByClientIdSuccessUpdateTest() throws Exception {
 
         // Given
         Long idClientToSearch = 1L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
-        when(service.editAddressByClient(any(Client.class), any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(service.editAddressByClient(anyLong(), any(Address.class))).thenReturn(Optional.of(ClientData.createClient001()));
         Address addressToUpdate = new Address(null, "san pancho", "chalco", "estado de mexico", 301245L);
         
         // When
@@ -228,17 +218,16 @@ class AddressControllerTest {
         assertEquals("alejandro.magb@gmail.com", client.getEmail());
         assertEquals(1538977020L, client.getPhonenumber());
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
-        verify(service).editAddressByClient(any(Client.class), any(Address.class));
+        verify(service).editAddressByClient(argThat(new CustomCondition(ClientData.idsValid, true)), any(Address.class));
     }
 
-    // To test the endpoint editAddressByClientId when the idClient doesnt exist
+    // To test the 'editAddressByClientId' endpoint when the address can not be updated
     @Test
-    void putEditAddressByClientIdInexistingIdTest() throws Exception {
+    void putEditAddressByClientIdUnsuccessUpdateTest() throws Exception {
 
         // Given
         Long idClientToSearch = 999999L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.empty());
+        when(service.editAddressByClient(anyLong(), any(Address.class))).thenReturn(Optional.empty());
         Address addressToUpdate = new Address(null, "san pancho", "chalco", "estado de mexico", 301245L);
         
         // When
@@ -251,18 +240,16 @@ class AddressControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
-        verify(service, never()).editAddressByClient(any(Client.class), any(Address.class));
+        verify(service).editAddressByClient(argThat(new CustomCondition(ClientData.idsValid, false)), any(Address.class));
     }
 
-    // To test the endpoint deleteAddressByClientId when we use an existing id 
+    // To test the 'deleteAddressByClientId' endpoint when the address can be deleted
     @Test
-    void deleteAddressByClientIdExistingIdTest() throws Exception {
+    void deleteAddressByClientIdSuccessDeleteTest() throws Exception {
     
         // Given
         Long idClientToSearch = 1L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
-        when(service.deleteAddressByClient(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(service.deleteAddressByClient(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
 
         // When
         MvcResult result = mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/addresses"))
@@ -289,17 +276,16 @@ class AddressControllerTest {
         assertEquals("alejandro.magb@gmail.com", client.getEmail());
         assertEquals(1538977020L, client.getPhonenumber());
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
-        verify(service).deleteAddressByClient(any(Client.class));
+        verify(service).deleteAddressByClient(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the endpoint deleteAddressByClientId when we use an inexisting id 
+    // To test the 'deleteAddressByClientId' endpoint when the address can not be deleted
     @Test
-    void deleteAddressByClientIdInexistingIdTest() throws Exception {
+    void deleteAddressByClientIdUnsuccessDeleteTest() throws Exception {
     
         // Given
         Long idClientToSearch = 999999L;
-        when(clientService.findById(anyLong())).thenReturn(Optional.empty());
+        when(service.deleteAddressByClient(anyLong())).thenReturn(Optional.empty());
         
         // When
         mockMvc.perform(delete("/api/clients/" + idClientToSearch + "/addresses")
@@ -310,8 +296,7 @@ class AddressControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
-        verify(service, never()).deleteAddressByClient(any(Client.class));
+        verify(service).deleteAddressByClient(argThat(new CustomCondition(ClientData.idsValid, false)));
     }
 
     // To test the method validation
@@ -335,7 +320,7 @@ class AddressControllerTest {
             .andExpect(jsonPath("$.cp").value("El campo cp must not be null"))
         ;
 
-        verify(service, never()).saveAddressByClient(any(Client.class), any(Address.class));
+        verify(service, never()).saveAddressByClient(anyLong(), any(Address.class));
     }
 
 }

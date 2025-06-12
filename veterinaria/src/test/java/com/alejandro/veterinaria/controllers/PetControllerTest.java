@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.alejandro.veterinaria.TestConfig;
 import com.alejandro.veterinaria.data.ClientData;
 import com.alejandro.veterinaria.data.CustomCondition;
+import com.alejandro.veterinaria.data.PetData;
 import com.alejandro.veterinaria.entities.Pet;
 import com.alejandro.veterinaria.entities.Client;
 import com.alejandro.veterinaria.services.PetService;
@@ -49,7 +50,7 @@ class PetControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // To test the endpoint getPetsByClient with an existing idClient
+    // To test the 'getPetsByClient' endpoint with an existing idClient
     @Test
     void getPetsByClientExistingIdTest() throws Exception {
 
@@ -88,9 +89,9 @@ class PetControllerTest {
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
     }
 
-    // To test the endpoint getPetByClient with an inexisting id
+    // To test the 'getPetsByClient' endpoint with an inexisting idClient
     @Test
-    void getPetByClientInexistingIdTest() throws Exception {
+    void getPetsByClientInexistingIdTest() throws Exception {
         
         // Given
         Long idClientToSearch = 999999L;
@@ -107,7 +108,7 @@ class PetControllerTest {
         verify(clientService).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
     }
 
-    // To test the endpoint saveNewPetByClientId when the idClient exists
+    // To test the 'saveNewPetByClientId' endpoint when the idClient exists
     @Test
     void postSaveNewPetByClientIdExistingIdTest() throws Exception {
 
@@ -143,10 +144,10 @@ class PetControllerTest {
         assertEquals("lennon@idoidraw.com", client.getEmail());
         assertEquals(45208954L, client.getPhonenumber());
 
-        verify(service).savePetByClient(anyLong(), any(Pet.class));
+        verify(service).savePetByClient(argThat(new CustomCondition(ClientData.idsValid, true)), any(Pet.class));
     }
 
-    // To test the endpoint saveNewPetByClientId when the idClient doesnt exist
+    // To test the 'saveNewPetByClientId' endpoint when the idClient doesnt exist
     @Test
     void postSaveNewPetByClientIdInexistingIdTest() throws Exception {
 
@@ -165,16 +166,16 @@ class PetControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(service).savePetByClient(anyLong(), any(Pet.class));
+        verify(service).savePetByClient(argThat(new CustomCondition(ClientData.idsValid, false)), any(Pet.class));
     }
 
-    // To test the endpoint 'editPetByClientId' when the pet can be updated
+    // To test the 'editPetByClientId' endpoint when the pet can be updated
     @Test
     void putEditPetByClientIdSuccessUpdateTest() throws Exception {
 
         // Given
         Long idClientToSearch = 3L;
-        Long idPetToSearch = 3L;
+        Long idPetToSearch = 30L;
         when(service.editPetByClient(anyLong(), anyLong(), any(Pet.class))).thenReturn(Optional.of(ClientData.createClient003()));
         Pet petToUpdate = new Pet(null, "rayas 3", "gato 3", "rayado 3", 15L, "tiene mucho sueño x3");
 
@@ -205,10 +206,10 @@ class PetControllerTest {
         assertEquals("cazador19@idoidraw.com", client.getEmail());
         assertEquals(1234977026L, client.getPhonenumber());
 
-        verify(service).editPetByClient(anyLong(), anyLong(), any(Pet.class));
+        verify(service).editPetByClient(argThat(new CustomCondition(ClientData.idsValid, true)), argThat(new CustomCondition(PetData.idsValid, true)), any(Pet.class));
     }
 
-    // To test the endpoint editPetByClientId when the pet can not be updated
+    // To test the 'editPetByClientId' endpoint when the pet can not be updated
     @Test
     void putEditPetByClientIdUnsuccessUpdateTest() throws Exception {
 
@@ -228,10 +229,10 @@ class PetControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(service).editPetByClient(anyLong(), anyLong(), any(Pet.class));
+        verify(service).editPetByClient(argThat(new CustomCondition(ClientData.idsValid, false)), argThat(new CustomCondition(PetData.idsValid, false)), any(Pet.class));
     }
 
-    // To test the endpoint 'deletePetByClient' when the pet can be deleted
+    // To test the 'deletePetByClient' endpoint when the pet can be deleted
     @Test
     void deletePetByClientIdSuccessDeleteTest() throws Exception {
 
@@ -265,10 +266,10 @@ class PetControllerTest {
         assertEquals("cazador19@idoidraw.com", client.getEmail());
         assertEquals(1234977026L, client.getPhonenumber());
 
-        verify(service).deletePetByClient(anyLong(), anyLong());
+        verify(service).deletePetByClient(argThat(new CustomCondition(ClientData.idsValid, true)), argThat(new CustomCondition(PetData.idsValid, true)));
     }
 
-    // To test the endpoint 'deletePetByClient' when the pet can not be deleted
+    // To test the 'deletePetByClient' endpoint when the pet can not be deleted
     @Test
     void deletePetByClientIdUnsuccessDeleteTest() throws Exception {
 
@@ -285,10 +286,10 @@ class PetControllerTest {
             .andExpect(content().string(""))
         ;
 
-        verify(service).deletePetByClient(anyLong(), anyLong());
+        verify(service).deletePetByClient(argThat(new CustomCondition(ClientData.idsValid, false)), argThat(new CustomCondition(PetData.idsValid, false)));
     }
 
-    // To test the method validation
+    // To test the 'validation' method
     @Test
     void validationTest() throws Exception {
 
@@ -310,7 +311,7 @@ class PetControllerTest {
             .andExpect(jsonPath("$.reasonForVisit").value("El campo reasonForVisit must not be blank"))
         ;
 
-        verify(service, never()).savePetByClient(anyLong(), any(Pet.class));
+        verify(service, never()).savePetByClient(argThat(new CustomCondition(ClientData.idsValid, true)), any(Pet.class));
     }
 
 }
