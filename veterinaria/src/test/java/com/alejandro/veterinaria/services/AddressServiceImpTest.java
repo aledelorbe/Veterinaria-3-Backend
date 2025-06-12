@@ -1,156 +1,214 @@
-// package com.alejandro.veterinaria.services;
+package com.alejandro.veterinaria.services;
 
-// import static org.junit.jupiter.api.Assertions.*;
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.*;
 
-// import java.util.Optional;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-// import com.alejandro.veterinaria.data.ClientData;
-// import com.alejandro.veterinaria.entities.Address;
-// import com.alejandro.veterinaria.entities.Client;
-// import com.alejandro.veterinaria.repositories.ClientRepository;
+import com.alejandro.veterinaria.data.ClientData;
+import com.alejandro.veterinaria.data.CustomCondition;
+import com.alejandro.veterinaria.entities.Address;
+import com.alejandro.veterinaria.entities.Client;
+import com.alejandro.veterinaria.repositories.ClientRepository;
 
-// @ExtendWith(MockitoExtension.class)
-// class AddressServiceImpTest {
+@ExtendWith(MockitoExtension.class)
+class AddressServiceImpTest {
     
-//     // To create a mock
-//     @Mock
-//     ClientRepository clientRepository; 
+    // To create a mock
+    @Mock
+    ClientRepository clientRepository; 
 
-//     // To create a service object with the injection of a mock
-//     @InjectMocks
-//     AddressServiceImp service;
+    // To create a service object with the injection of a mock
+    @InjectMocks
+    AddressServiceImp service;
 
-//     // To create a service object with the injection of a mock
-//     @InjectMocks
-//     ClientServiceImp clientService;
+    // To create a service object with the injection of a mock
+    @InjectMocks
+    ClientServiceImp clientService;
 
-//     // To test the method getAddressByClient when the client has an address
-//     @Test
-//     void getAddressByClientHasAddressTest() {
+    // To test the 'saveAddressByClient' method when we use an existing client id
+    @Test
+    void saveAddressByClientExistingIdTest() {
     
-//         // Given
-//         Client clientDb = ClientData.createClient004();
-
-//         // when
-//         Optional<Address> optionalAddress = service.getAddressByClient(clientDb);
-//         Address address = optionalAddress.get();
-
-//         // Then
-//         assertNotNull(clientDb);
-//         assertEquals(4L, clientDb.getId());
-//         assertEquals("Esteban", clientDb.getName());
-//         assertEquals("Gonzalez", clientDb.getLastname());
-//         assertEquals("pastor34@idoidraw.com", clientDb.getEmail());
-//         assertEquals(1234567890L, clientDb.getPhonenumber());
-
-//         assertNotNull(address);
-//         assertEquals(400L, address.getId());
-//         assertEquals("candelaria", address.getStreet());
-//         assertEquals("gustavo madero", address.getState());
-//         assertEquals("cdmx", address.getCity());
-//         assertEquals(56546L, address.getCp());
-//     }
-
-//     // To test the method getAddressByClient when the client does not have an address
-//     @Test
-//     void getAddressByClientNoAddressTest() {
-    
-//         // Given
-//         Client clientDb = ClientData.createClient005();
-
-//         // when
-//         Optional<Address> optionalAddress = service.getAddressByClient(clientDb);
-
-//         // Then
-//         assertFalse(optionalAddress.isPresent());
-//     }
-
-//     // To test the method saveAddressByClient 
-//     @Test
-//     void saveAddressByClientTest() {
-    
-//         // Given
-//         Client clientDb = ClientData.createClient005();
-//         Address addressInsert = new Address(null, "gomez farias", "chilpancingo", "guerrero", 56126L);
-//         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Given
+        Long idToSearch = 5L;
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient005()));
+        when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        Address addressInsert = new Address(null, "gomez farias", "chilpancingo", "guerrero", 56126L);
         
-//         // when
-//         Client newClient = service.saveAddressByClient(clientDb, addressInsert);
-//         Address newAddress = newClient.getAddress();
+        // when
+        Optional<Client> optionalNewClient = service.saveAddressByClient(idToSearch, addressInsert);
+        Client newClient = optionalNewClient.get();
+        Address newAddress = newClient.getAddress();
         
-//         // then
-//         assertEquals("John", newClient.getName());
-//         assertEquals("Lennon", newClient.getLastname());
-//         assertEquals("lennon@idoidraw.com", newClient.getEmail());
-//         assertEquals(45208954L, newClient.getPhonenumber());
+        // then
+        assertEquals("John", newClient.getName());
+        assertEquals("Lennon", newClient.getLastname());
+        assertEquals("lennon@idoidraw.com", newClient.getEmail());
+        assertEquals(45208954L, newClient.getPhonenumber());
 
-//         assertEquals("gomez farias", newAddress.getStreet());
-//         assertEquals("chilpancingo", newAddress.getState());
-//         assertEquals("guerrero", newAddress.getCity());
-//         assertEquals(56126L, newAddress.getCp());
+        assertEquals("gomez farias", newAddress.getStreet());
+        assertEquals("chilpancingo", newAddress.getState());
+        assertEquals("guerrero", newAddress.getCity());
+        assertEquals(56126L, newAddress.getCp());
 
-//         verify(clientRepository).save(any(Client.class));
-//     }
+        verify(clientRepository).save(any(Client.class));
+    }
 
-//     // To test the method editAddressByClient 
-//     @Test
-//     void editAddressByClientTest() {
-        
-//         // Given
-//         Client clientDb = ClientData.createClient004();
-//         Address addressToUpdate = new Address(null, "miguel hidalgo", "acatlan", "puebla", 56346L);
-//         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-//         // When
-//         Client newClientDb = service.editAddressByClient(clientDb, addressToUpdate);
-//         Address addressUpdated = newClientDb.getAddress();
-
-//         // then
-//         assertNotNull(newClientDb);
-//         assertEquals(4L, newClientDb.getId());
-//         assertEquals("Esteban", newClientDb.getName());
-//         assertEquals("Gonzalez", newClientDb.getLastname());
-//         assertEquals("pastor34@idoidraw.com", newClientDb.getEmail());
-//         assertEquals(1234567890L, newClientDb.getPhonenumber());
-
-//         assertEquals("miguel hidalgo", addressUpdated.getStreet());
-//         assertEquals("acatlan", addressUpdated.getState());
-//         assertEquals("puebla", addressUpdated.getCity());
-//         assertEquals(56346L, addressUpdated.getCp());
-
-//         verify(clientRepository).save(any(Client.class));
-//     }
-
-//     // To test the method deleteAddressByClient
-//     @Test
-//     void deleteAddressByClientTest() {
+    // To test the 'saveAddressByClient' method when we use an inexisting client id
+    @Test
+    void saveAddressByClientInexistingIdTest() {
     
-//         // Given
-//         Client clientDb = ClientData.createClient003();
-//         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Given
+        Long idToSearch = 99999L;
+        Address addressInsert = new Address(null, "gomez farias", "chilpancingo", "guerrero", 56126L);
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-//         // When
-//         Client newClientDb = service.deleteAddressByClient(clientDb);
+        // when
+        Optional<Client> optionalNewClient = service.saveAddressByClient(idToSearch, addressInsert);
+        
+        // Then
+        assertFalse(optionalNewClient.isPresent());
+        assertThrows(NoSuchElementException.class, () -> {
+            optionalNewClient.orElseThrow();
+        });
 
-//         // then
-//         assertNotNull(newClientDb);
-//         assertEquals(3L, newClientDb.getId());
-//         assertEquals("Celia", newClientDb.getName());
-//         assertEquals("Bello", newClientDb.getLastname());
-//         assertEquals("cazador19@idoidraw.com", newClientDb.getEmail());
-//         assertEquals(1234977026L, newClientDb.getPhonenumber());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(clientRepository, never()).save(any(Client.class));
+    }
 
-//         assertNull(newClientDb.getAddress());
+    // To test the 'editAddressByClient' method when an existent client ID is used 
+    @Test
+    void editAddressByClientExistingIdTest() {
+        
+        // Given
+        Long idToSearch = 4L;
+        Address addressToUpdate = new Address(null, "miguel hidalgo", "acatlan", "puebla", 56346L);
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
+        when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-//         verify(clientRepository).save(any(Client.class));
-//     }
+        // When
+        Optional<Client> optionalNewClient = service.editAddressByClient(idToSearch, addressToUpdate);
+        Client newClient = optionalNewClient.get();
+        Address addressUpdated = newClient.getAddress();
 
-// }
+        // then
+        assertNotNull(newClient);
+        assertEquals(4L, newClient.getId());
+        assertEquals("Esteban", newClient.getName());
+        assertEquals("Gonzalez", newClient.getLastname());
+        assertEquals("pastor34@idoidraw.com", newClient.getEmail());
+        assertEquals(1234567890L, newClient.getPhonenumber());
+
+        assertEquals("miguel hidalgo", addressUpdated.getStreet());
+        assertEquals("acatlan", addressUpdated.getState());
+        assertEquals("puebla", addressUpdated.getCity());
+        assertEquals(56346L, addressUpdated.getCp());
+
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(clientRepository).save(any(Client.class));
+    }
+
+    // To test the 'editAddressByClient' method when an existent client ID is used but the client doesnt have an address
+    @Test
+    void editAddressByClientExistingIdNoAddressTest() {
+        
+        // Given
+        Long idToSearch = 5L;
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient005()));
+        Address addressToUpdate = new Address(null, "miguel hidalgo", "acatlan", "puebla", 56346L);
+
+        // When
+        Optional<Client> optionalClient = service.editAddressByClient(idToSearch, addressToUpdate);
+
+        // Then
+        assertFalse(optionalClient.isPresent());
+        assertThrows(NoSuchElementException.class, () -> {
+            optionalClient.orElseThrow();
+        });
+
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    // To test the 'editAddressByClient' method when a non-existent client ID is used 
+    @Test
+    void editAddressByClientInexistingIdTest() {
+        
+        // Given
+        Long idToSearch = 9999L;
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+        Address addressToUpdate = new Address(null, "miguel hidalgo", "acatlan", "puebla", 56346L);
+
+        // When
+        Optional<Client> optionalClient = service.editAddressByClient(idToSearch, addressToUpdate);
+
+        // Then
+        assertFalse(optionalClient.isPresent());
+        assertThrows(NoSuchElementException.class, () -> {
+            optionalClient.orElseThrow();
+        });
+
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+    // To test the 'deleteAddressByClient' method when an existent client ID is used 
+    @Test
+    void deleteAddressByClientTest() {
+    
+        // Given
+        Long idToSearch = 3L;
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient003()));
+        when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        Optional<Client> optionalClient = service.deleteAddressByClient(idToSearch);
+        Client newClient = optionalClient.get();
+
+        // then
+        assertNotNull(newClient);
+        assertEquals(3L, newClient.getId());
+        assertEquals("Celia", newClient.getName());
+        assertEquals("Bello", newClient.getLastname());
+        assertEquals("cazador19@idoidraw.com", newClient.getEmail());
+        assertEquals(1234977026L, newClient.getPhonenumber());
+
+        assertNull(newClient.getAddress());
+
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(clientRepository).save(any(Client.class));
+    }
+
+    // To test the 'deleteAddressByClient' method when a non-existent client ID is used 
+    @Test
+    void deleteAddressByClientInexistingIdTest() {
+    
+        // Given
+        Long idToSearch = 999999L;
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // When
+        Optional<Client> optionalClient = service.deleteAddressByClient(idToSearch);
+
+        // Then
+        assertFalse(optionalClient.isPresent());
+        assertThrows(NoSuchElementException.class, () -> {
+            optionalClient.orElseThrow();
+        });
+
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(clientRepository, never()).save(any(Client.class));
+    }
+
+}

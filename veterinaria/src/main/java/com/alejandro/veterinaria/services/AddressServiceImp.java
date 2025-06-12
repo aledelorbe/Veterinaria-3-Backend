@@ -93,18 +93,11 @@ public class AddressServiceImp implements AddressService {
         
             Client clientDb = optionalClient.get();
         
-            // If the client has an address then...
-            if ( clientDb.getAddress() != null ) {
-
-                // Delete the address
-                clientDb.setAddress(null);
-        
-                // and save the information in the db
-                return Optional.of(clientRepository.save(clientDb));
-            }
-
-            // Else, return an empty optional
-            return Optional.empty();
+            // Delete the address
+            clientDb.setAddress(null);
+    
+            // and save the information in the db
+            return Optional.of(clientRepository.save(clientDb));
         }
 
         // Else, return an empty optional

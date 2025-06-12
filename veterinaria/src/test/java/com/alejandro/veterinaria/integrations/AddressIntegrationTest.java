@@ -61,7 +61,7 @@ class AddressIntegrationTest {
         ResponseEntity<?> response  = client.getForEntity("/api/clients/" + idClientToSearch + "/addresses", Void.class);
 
         // Then
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNull(response.getBody());
 
     }

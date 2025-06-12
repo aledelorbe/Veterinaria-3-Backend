@@ -43,7 +43,7 @@ class PetServiceImpTest {
     @InjectMocks
     ClientServiceImp clientService;
 
-    // To test the method findById when we use an existing id
+    // To test the 'findById' method when an existent client ID is used
     @Test
     void findByIdExistingIdTest() {
 
@@ -66,7 +66,7 @@ class PetServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
     }
 
-    // To test the method findById when we use an inexisting id
+    // To test the 'findById' method when a non-existent client ID is used
     @Test
     void findByIdInexistingIdTest() {
 
@@ -86,15 +86,15 @@ class PetServiceImpTest {
         verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, false)));
     }
 
-    // To test the method savePetByClient when we use an existing client id
+    // To test the 'savePetByClient' method when an existent client ID is used
     @Test
     void savePetByClientExistingIdTest() {
     
         // Given
         Long idToSearch = 4L;
         when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
-        Pet petInsert = new Pet(null, "lince intergalactico", "lince", null, 5L, "le duele el estomago");
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        Pet petInsert = new Pet(null, "lince intergalactico", "lince", null, 5L, "le duele el estomago");
         
         // when
         Optional<Client> optionalNewClient = service.savePetByClient(idToSearch, petInsert);
@@ -119,17 +119,18 @@ class PetServiceImpTest {
         assertEquals(5L, pets.get(size - 1).getAge());
         assertEquals("le duele el estomago", pets.get(size - 1).getReasonForVisit());
 
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
         verify(clientRepository).save(any(Client.class));
     }
 
-    // To test the method savePetByClient when we use an inexisting client id
+    // To test the 'savePetByClient' method a non-existent client ID is used
     @Test
     void savePetByClientInexistingIdTest() {
     
         // Given
         Long idToSearch = 99999L;
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
         Pet petInsert = new Pet(null, "lince intergalactico", "lince", null, 5L, "le duele el estomago");
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
         
         // when
         Optional<Client> optionalNewClient = service.savePetByClient(idToSearch, petInsert);
@@ -140,7 +141,7 @@ class PetServiceImpTest {
             optionalNewClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -150,7 +151,7 @@ class PetServiceImpTest {
         
         // Given
         Long idToSearch = 9999L;
-        Long petIdToSearch = 1L;
+        Long petIdToSearch = 10L;
         when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
         when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet001()));
         Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
@@ -164,8 +165,8 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -176,9 +177,9 @@ class PetServiceImpTest {
         // Given
         Long idToSearch = 1L;
         Long petIdToSearch = 9999L;
+        Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
-        Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         
         // When
         Optional<Client> optionalClient = service.editPetByClient(idToSearch, petIdToSearch, petToUpdate);
@@ -189,8 +190,8 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, false)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -200,10 +201,10 @@ class PetServiceImpTest {
         
         // Given
         Long idToSearch = 1L;
-        Long petIdToSearch = 4L;
-        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
-        when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet001()));
+        Long petIdToSearch = 80L;
         Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
+        when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet008()));
         
         // When
         Optional<Client> optionalClient = service.editPetByClient(idToSearch, petIdToSearch, petToUpdate);
@@ -214,21 +215,21 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
-    // To test the method editPetByClient when we use an existing id
+    // To test the 'editPetByClient' method when the existing pet ID and client ID are used but the client is an owner
     @Test
     void editPetByClientExistingIdTest() {
         
         // Given
         Long idToSearch = 4L;
         Long petIdToSearch = 80L;
+        Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient004()));
         when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet008()));
-        Pet petToUpdate = new Pet(null, "lince update", "reptil", null, 3L, "infeccion en los ojos");
         when(clientRepository.save(any(Client.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // When
@@ -252,8 +253,8 @@ class PetServiceImpTest {
         assertEquals(3L, petUpdated.getAge());
         assertEquals("infeccion en los ojos", petUpdated.getReasonForVisit());
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository).save(any(Client.class));
     }
 
@@ -263,7 +264,7 @@ class PetServiceImpTest {
         
         // Given
         Long idToSearch = 9999L;
-        Long petIdToSearch = 1L;
+        Long petIdToSearch = 10L;
         when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
         when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet001()));
         
@@ -276,8 +277,8 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, false)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -300,8 +301,8 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, false)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -311,9 +312,9 @@ class PetServiceImpTest {
         
         // Given
         Long idToSearch = 1L;
-        Long petIdToSearch = 4L;
+        Long petIdToSearch = 80L;
         when(clientRepository.findById(anyLong())).thenReturn(Optional.of(ClientData.createClient001()));
-        when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet001()));
+        when(repository.findById(anyLong())).thenReturn(Optional.of(PetData.createPet008()));
         
         // When
         Optional<Client> optionalClient = service.deletePetByClient(idToSearch, petIdToSearch);
@@ -324,8 +325,8 @@ class PetServiceImpTest {
             optionalClient.orElseThrow();
         });
 
-        verify(clientRepository).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository, never()).save(any(Client.class));
     }
 
@@ -364,8 +365,8 @@ class PetServiceImpTest {
         assertEquals("pastor34@idoidraw.com", newClientDb.getEmail());
         assertEquals(1234567890L, newClientDb.getPhonenumber());
 
-        verify(clientRepository, times(3)).findById(anyLong());
-        verify(repository).findById(anyLong());
+        verify(clientRepository, times(3)).findById(argThat(new CustomCondition(ClientData.idsValid, true)));
+        verify(repository).findById(argThat(new CustomCondition(PetData.idsValid, true)));
         verify(clientRepository).save(any(Client.class));
     }
 
