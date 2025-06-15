@@ -90,13 +90,13 @@ Rutas organizadas para interactuar con los clientes, mascotas y direcciones. Ope
 
 - `controllers/`: Contiene las clases de prueba que validan el comportamiento de los métodos en los controladores del código fuente.
 - `services/`: Incluye las clases de prueba dedicadas a verificar el correcto funcionamiento de los métodos dentro de los servicios de la aplicación.
+- `repositories/`: Incluye las clases de prueba dedicadas a verificar el correcto funcionamiento de las consultas personalizadas dentro de los respositorios de la aplicación.
 - `data/`: Almacena clases con datos simulados (mock data) utilizados durante la ejecución de las pruebas.
 - `integrations/`: Contiene las clases de prueba que validan el comportamiento completo de los controladores (tests de integración).
 - `resources/`: Almacena los datos en formato SQL utilizados como insumos para las pruebas de integración. Ademas contiene las propiedades de configuracion de una base de datos en memoria H2 para que la aplicación la use durante las pruebas de integracion.
 
 ## Futuras mejoras
 
-- Realizar pruebas unitarias de la capa de repositorio.
 - Agregar un endpoint qué agregue un nuevo cliente y un nuevo arreglo de mascotas al mismo tiempo.
 - Agregar una tabla llamada `Historial clinico` para registrar las veces en las que ha venido el paciente. Esta tabla contendra los atributos: `reason for visit`, `date` y `diagnostico`.
 - Una vez implementada lo descrito en el paso anterior, generar una nueva versión del proyecto indicando que este trabajo incluye servicios, pruebas unitarias y pruebas de integración.
@@ -112,7 +112,7 @@ Puedes ver una demo del proyecto en el siguiente enlace: [Veterinaria](Veterinar
 
 # Veterinary Clinic (Backend)
 
-This project involves the development of a backend system to manage information related to a veterinary clinic. It uses the **Spring Boot** framework and is designed to provide a REST API for handling clients, their pets, and associated addresses.
+This project consists of developing a backend system to manage information related to a veterinary clinic. It uses the **Spring Boot** framework and is designed to provide a REST API to handle clients, their pets, and associated addresses.
 
 ## Technologies Used
 
@@ -122,10 +122,10 @@ This project involves the development of a backend system to manage information 
   - **Jakarta Validation**: For input data validation.
   - **Exception Handling**.
   - **Aspect-Oriented Programming (AOP)**.
-- **Maven**: For dependency management and project building.
-- **MySQL**: Relational database management system used to store information about clients, pets, and addresses.
-- **Postman**: Used to simulate a client making requests to the server and to test the endpoints.
-- **JUnit**: Unit testing framework used to verify the correct functioning of methods.
+- **Maven**: For dependency management and project build.
+- **MySQL**: Relational database management system to store information about clients, pets, and addresses.
+- **Postman**: Used to simulate client requests and test endpoints.
+- **JUnit**: Unit testing framework used to verify the correct functionality of the methods.
 - **Mockito**: Mocking framework used to simulate dependencies and facilitate isolated unit testing.
 
 ## Features
@@ -135,84 +135,85 @@ This project involves the development of a backend system to manage information 
 Organized routes to interact with clients, pets, and addresses. Supported operations:
 
 - **Client**:
-  - Get a list of all clients.
-  - Get a list of all clients whose pet has a specific name.
-  - Get information of a specific client by ID.
-  - Get information of a specific client by name.
-  - Get information of a specific client by last name.
+  - Retrieve a list of all clients.
+  - Retrieve a list of all clients whose pet has a specific name.
+  - Retrieve the information of a specific client by ID.
+  - Retrieve the information of a specific client by first name.
+  - Retrieve the information of a specific client by last name.
   - Create a new client.
   - Update an existing client's information.
   - Delete a client by ID.
-
 - **Pet**:
-  - Get the list of all pets belonging to a specific client.
+  - Retrieve a list of all pets belonging to a specific client.
   - Add a new pet to a specific client.
-  - Update a pet's information for a specific client.
-  - Delete a pet's information for a specific client.
-
+  - Update the information of a pet for a specific client.
+  - Delete a pet for a specific client.
 - **Address**:
-  - Get the address belonging to a specific client.
+  - Retrieve the address associated with a specific client.
   - Add an address to a specific client.
-  - Update a client's address information.
-  - Delete a client's address information.
+  - Update the address of a specific client.
+  - Delete the address of a specific client.
 
 ### Aspect-Oriented Programming (AOP)
 
-- The `ClientAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating clients in the database. Its purpose is to trim leading and trailing whitespace from the **name**, **last name**, and **email** attributes.
-- The `PetAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating pets in the database. Its purpose is to trim whitespace from **name**, **species**, **breed**, and **reason for visit**.
-- The `AddressAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating addresses in the database. Its purpose is to trim whitespace from **street**, **neighborhood**, and **city** attributes.
+- The `ClientAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating clients in the database. The purpose is to trim leading and trailing spaces from the **first name**, **last name**, and **email** attributes.
+- The `PetAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating pets. It trims whitespace from **name**, **species**, **breed**, and **reason for visit**.
+- The `AddressAspect` class includes methods that intercept, before execution, the methods responsible for saving and updating addresses. It trims whitespace from **street**, **neighborhood**, and **city**.
 
 ### Database Management
 
 - Integration with MySQL for data manipulation.
-- The SQL database has three tables to manage information on clients, pets, and addresses.
-- **Database Constraints**:
-  - A client cannot be registered more than once.
-  - A pet cannot be registered more than once for the same client.
+- The SQL database includes three tables managing the information of clients, pets, and addresses.
+- **Database constraints**:
+  - The same client cannot be registered more than once.
+  - The same pet cannot be registered more than once for the same client.
 
 ### Validations and Exceptions
 
 - **Exception Handling**:
-  - If the `Client` entity constraint is violated by trying to register the same client twice, or if the `Pet` entity constraint is violated by registering the same pet twice for the same client, a `DataIntegrityViolationException` is thrown. This exception is handled by two classes that work together to capture it and generate a custom message indicating which constraint was violated.
-
+  - If a constraint is violated (e.g., duplicate client or pet registration), a `DataIntegrityViolationException` is thrown. This is handled through two classes that work together to catch the exception and generate a custom error message indicating which constraint was violated.
 - **Input Data Validation**:
   - `Client`:
-    - **Name** and **last name** cannot be empty or contain only whitespace.
-    - **Email** must have a valid format.
-    - **Phone number** must be exactly 10 digits.
+    - **First name** and **last name** must not be empty or contain only whitespace.
+    - **Email** must be in a valid format.
+    - **Phone number** must be exactly 10 digits long.
   - `Pet`:
-    - **Name**, **species**, and **reason for visit** cannot be empty or contain only whitespace.
+    - **Name**, **species**, and **reason for visit** must not be empty or contain only whitespace.
     - **Age** must not be empty.
   - `Address`:
     - **Street**, **neighborhood**, **city**, and **postal code** must not be empty or contain only whitespace.
 
 ### Design Patterns
 
-- The **MVC** architectural design pattern is used to separate the project code into different layers.
+- The **MVC architectural pattern** is used to separate the application logic into different layers.
 
 ## Project Structure
 
 ### Application Source Code
 
-- `aop/`: Contains classes handling logic related to aspect-oriented programming.
-- `controllers/`: Contains classes handling HTTP requests and defining the API endpoints.
+- `aop/`: Contains classes that handle logic related to aspect-oriented programming.
+- `controllers/`: Contains classes that manage HTTP requests and define API endpoints.
 - `services/`: Contains classes with business logic.
-- `repositories/`: Contains interfaces that extend a data access interface.
-- `entities/`: Contains classes mapped to their respective database tables.
-- `utils/`: Contains utility classes with reusable methods across the application.
+- `repositories/`: Contains interfaces that extend repository interfaces for data management.
+- `entities/`: Contains classes mapped to database tables.
+- `utils/`: Contains utility classes with methods reusable across the application.
 
 ### Test Code
 
-- `controllers/`: Contains test classes that validate controller method behaviors.
-- `services/`: Includes test classes for verifying service method functionality.
-- `data/`: Stores mock data classes used during testing.
+- `controllers/`: Contains test classes that validate the behavior of controller methods.
+- `services/`: Contains test classes that validate the logic within service classes.
+- `repositories/`: Contains test classes for custom repository queries.
+- `data/`: Stores mock data classes used during test execution.
 - `integrations/`: Contains test classes that validate the full behavior of controllers (integration tests).
-- `resources/`: Stores SQL data used as input for integration tests and contains configuration properties for an in-memory H2 database used during testing.
+- `resources/`: Contains SQL mock data used for integration tests. Also includes configuration for an in-memory H2 database for testing purposes.
 
 ## Future Improvements
 
-- Implement unit tests for the repository layer.
-- Once the unit test described in the previous step has been implemented, release a new version of the project indicating that it includes services, unit tests, and integration tests.
+- Add an endpoint to register a new client along with an array of pets simultaneously.
+- Add a table called `MedicalHistory` to track the client’s visit records. This table will include the following attributes: `reason for visit`, `date`, and `diagnosis`.
+- Once the feature above is implemented, release a new version of the project including services, unit tests, and integration tests.
+- Split the application into two microservices: client data and pet data.
+- Dockerize the application.
 - Deploy to AWS.
 
 ## Demo
